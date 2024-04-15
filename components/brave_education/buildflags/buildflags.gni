@@ -3,10 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_ui_allow_circular_includes_from = []
-if (!is_android) {
-  brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ui/webui/brave_education",
-    "//brave/browser/ui/webui/brave_news_internals",
-  ]
+declare_args() {
+  enable_brave_education = is_win || is_mac || is_linux
 }

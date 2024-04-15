@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/components/brave_education/buildflags",
   "+brave/components/webui/about_ui.h",
   "+third_party/re2",
 ]

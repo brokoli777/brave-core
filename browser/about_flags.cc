@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
 #include "brave/components/brave_component_updater/browser/features.h"
+#include "brave/components/brave_education/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
@@ -82,6 +83,10 @@
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#include "brave/components/brave_education/common/features.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -437,6 +442,19 @@
                    kOsDesktop,                                              \
                    FEATURE_VALUE_TYPE(kExtensionsManifestV2),               \
                }))
+
+#if BUILDFLAG(ENABLE_BRAVE_EDUCATION)
+#define BRAVE_EDUCATION_FEATURE_ENTRIES                                       \
+  EXPAND_FEATURE_ENTRIES({                                                    \
+      "brave-show-getting-started-page",                                      \
+      "Show getting started pages",                                           \
+      "Show a getting started page after completing the Welcome UX.",         \
+      kOsDesktop,                                                             \
+      FEATURE_VALUE_TYPE(brave_education::features::kShowGettingStartedPage), \
+  })
+#else
+#define BRAVE_EDUCATION_FEATURE_ENTRIES
+#endif
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
@@ -989,6 +1007,7 @@
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_WORKAROUND_NEW_WINDOW_FLASH                                            \
+  BRAVE_EDUCATION_FEATURE_ENTRIES                                              \
   LAST_BRAVE_FEATURE_ENTRIES_ITEM  // Keep it as the last item.
 namespace flags_ui {
 namespace {
