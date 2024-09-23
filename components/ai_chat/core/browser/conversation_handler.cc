@@ -85,6 +85,24 @@ AssociatedContentDelegate::AssociatedContentDelegate()
 
 AssociatedContentDelegate::~AssociatedContentDelegate() = default;
 
+mojom::AssociatedContentType
+AssociatedContentDelegate::GetAssociatedContentType() const {
+  return mojom::AssociatedContentType::Web;
+}
+
+mojom::SiteInfoDetailPtr AssociatedContentDelegate::GetAssociatedContentDetail()
+    const {
+  const GURL url = GetURL();
+  auto detail = mojom::WebSiteInfoDetail::New();
+  detail->title = base::UTF16ToUTF8(GetTitle());
+  if (url.SchemeIsHTTPOrHTTPS()) {
+    detail->hostname = url.host();
+    detail->url = url;
+  }
+
+  return mojom::SiteInfoDetail::NewWebSiteInfo(std::move(detail));
+}
+
 void AssociatedContentDelegate::OnNewPage(int64_t navigation_id) {
   pending_top_similarity_requests_.clear();
   if (text_embedder_) {
@@ -450,6 +468,12 @@ void ConversationHandler::SetAssociatedContentDelegate(
   OnAssociatedContentInfoChanged();
 }
 
+void ConversationHandler::SetMultiTabContent(
+    std::unique_ptr<AssociatedMultiTabContent> delegate) {
+  multi_tab_content_ = std::move(delegate);
+  SetAssociatedContentDelegate(multi_tab_content_->GetWeakPtr());
+}
+
 const mojom::Model& ConversationHandler::GetCurrentModel() {
   const mojom::Model* model = model_service_->GetModel(model_key_);
   CHECK(model);
@@ -496,6 +520,26 @@ void ConversationHandler::GetState(GetStateCallback callback) {
       current_error_);
 
   std::move(callback).Run(std::move(state));
+}
+
+void ConversationHandler::AddTabToMultiTabContent(const GURL& url) {
+  if (!multi_tab_content_) {
+    return;
+  }
+  auto* content = ai_chat_service_->GetAssociatedContentForUrl(url);
+  if (!content) {
+    return;
+  }
+  multi_tab_content_->AddContent(content);
+  OnAssociatedContentInfoChanged();
+}
+
+void ConversationHandler::RemoveTabFromMultiTabContent(const GURL& url) {
+  if (!multi_tab_content_) {
+    return;
+  }
+  multi_tab_content_->RemoveContent(url);
+  OnAssociatedContentInfoChanged();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,
@@ -1223,7 +1267,10 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     const bool has_summarized = found_iter != chat_history_.end();
     if (!has_summarized) {
       suggestions_.emplace_back(
-          associated_content_delegate_->GetCachedIsVideo()
+          (associated_content_delegate_->GetAssociatedContentType() ==
+           mojom::AssociatedContentType::MultipleWeb)
+              ? "Summarize these pages"
+          : associated_content_delegate_->GetCachedIsVideo()
               ? l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)
               : l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE));
     }

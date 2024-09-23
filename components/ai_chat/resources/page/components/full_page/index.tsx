@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as React from 'react'
 import Button from '@brave/leo/react/button'
+import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import useMediaQuery from '$web-common/useMediaQuery'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -15,6 +15,7 @@ import styles from './style.module.scss'
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
+  const chat = useConversation();
   const asideAnimationRef = React.useRef<Animation | null>()
   const controllerRef = React.useRef(new AbortController())
   const isSmall = useMediaQuery('(max-width: 1024px)')
@@ -124,6 +125,15 @@ export default function FullScreen() {
       <div className={styles.content}>
         <Main />
       </div>
+      {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
+        <div className={styles.headerSpacer} />
+        <h3>Tabs used in this conversation</h3>
+        <SitePicker />
+        <ul>
+          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) =>
+            <TabEntry key={i} site={t} />)}
+        </ul>
+      </div>}
     </div>
   )
 }

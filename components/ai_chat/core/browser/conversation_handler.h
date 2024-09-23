@@ -58,6 +58,7 @@ class AIChatFeedbackAPI;
 class AIChatService;
 class AssociatedArchiveContent;
 class AIChatCredentialManager;
+class AssociatedMultiTabContent;
 
 // Performs all conversation-related operations, responsible for sending
 // messages to the conversation engine, handling the responses, and owning

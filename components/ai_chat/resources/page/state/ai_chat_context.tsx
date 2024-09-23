@@ -13,12 +13,14 @@ interface Props {
   isDefaultConversation: boolean
   // Create a new conversation and use it
   onNewConversation: () => unknown
+  onNewMultiTabConversation: () => void;
   // Select a new conversation
   onSelectConversationUuid: (id: string | undefined) => unknown
 }
 
 export interface AIChatContext extends Props {
   visibleConversations: mojom.Conversation[]
+  availableAssociatedContent: mojom.WebSiteInfoDetail[]
   hasAcceptedAgreement: boolean
   isPremiumStatusFetching: boolean
   isPremiumUser: boolean
@@ -42,6 +44,7 @@ export interface AIChatContext extends Props {
 const defaultContext: AIChatContext = {
   isDefaultConversation: true,
   visibleConversations: [],
+  availableAssociatedContent: [],
   hasAcceptedAgreement: Boolean(loadTimeData.getBoolean('hasAcceptedAgreement')),
   isPremiumStatusFetching: true,
   isPremiumUser: false,
@@ -82,14 +85,17 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
       const [
         { conversations: visibleConversations },
         { actionList: allActions },
+        { availableContent: availableAssociatedContent },
         { canShow: canShowPremiumPrompt }
       ] = await Promise.all([
         Service.getVisibleConversations(),
         Service.getActionMenuList(),
+        Service.getAvailableContent(),
         Service.getCanShowPremiumPrompt()
       ])
       setPartialContext({
         visibleConversations,
+        availableAssociatedContent,
         allActions,
         canShowPremiumPrompt
       })
@@ -123,6 +129,12 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
       })
     )
 
+    Observer.onAvailableContentChanged.addListener((availableAssociatedContent: mojom.WebSiteInfoDetail[]) => {
+      setPartialContext({
+        availableAssociatedContent
+      })
+    })
+
     // Since there is no server-side event for premium status changing,
     // we should check often. And since purchase or login is performed in
     // a separate WebContents, we can check when focus is returned here.
@@ -152,6 +164,8 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
     editingConversationId,
     setEditingConversationId
   }
+
+  console.log('content', store.availableAssociatedContent)
 
   return (
     <AIChatReactContext.Provider value={store}>

@@ -28,6 +28,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -144,6 +145,12 @@ class AIChatService : public KeyedService,
       GetCanShowPremiumPromptCallback callback) override;
   void DismissPremiumPrompt() override;
   void DeleteConversation(const std::string& id) override;
+  void GetAvailableContent(GetAvailableContentCallback callback) override;
+
+  void RegisterAssociatedContentsAvailable(AssociatedContentDriver* content);
+  void AssociatedContentsDestroyed(AssociatedContentDriver* content);
+  AssociatedContentDriver* GetAssociatedContentForUrl(GURL url);
+  void OnContentMetadataChanged();
   void RenameConversation(const std::string& id,
                           const std::string& new_name) override;
 
@@ -217,6 +224,8 @@ class AIChatService : public KeyedService,
   raw_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  std::vector<AssociatedContentDriver*> associated_contents_;
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;

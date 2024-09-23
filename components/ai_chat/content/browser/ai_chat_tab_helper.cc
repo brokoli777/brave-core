@@ -33,6 +33,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -122,6 +123,7 @@ void AIChatTabHelper::BindPageContentExtractorHost(
 }
 
 AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
+                                 AIChatService* ai_chat_service,
                                  std::unique_ptr<PrintPreviewExtractionDelegate>
                                      print_preview_extraction_delegate)
     : content::WebContentsObserver(web_contents),
@@ -129,10 +131,12 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents,
       AssociatedContentDriver(web_contents->GetBrowserContext()
                                   ->GetDefaultStoragePartition()
                                   ->GetURLLoaderFactoryForBrowserProcess()),
+      ai_chat_service_(ai_chat_service),
       print_preview_extraction_delegate_(
           std::move(print_preview_extraction_delegate)),
       page_content_fetcher_delegate_(
           std::make_unique<PageContentFetcher>(web_contents)) {
+  ai_chat_service->RegisterAssociatedContentsAvailable(this);
   favicon::ContentFaviconDriver::FromWebContents(web_contents)
       ->AddObserver(this);
   previous_page_title_ = web_contents->GetTitle();
@@ -164,6 +168,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
 void AIChatTabHelper::WebContentsDestroyed() {
   favicon::ContentFaviconDriver::FromWebContents(web_contents())
       ->RemoveObserver(this);
+  ai_chat_service_->AssociatedContentsDestroyed(this);
   inner_web_contents_ = nullptr;
 }
 
@@ -384,6 +389,7 @@ std::u16string AIChatTabHelper::GetPageTitle() const {
 
 void AIChatTabHelper::OnNewPage(int64_t navigation_id) {
   DVLOG(3) << __func__ << " id: " << navigation_id;
+  ai_chat_service_->OnContentMetadataChanged();
   AssociatedContentDriver::OnNewPage(navigation_id);
   if (pending_get_page_content_callback_) {
     std::move(pending_get_page_content_callback_).Run("", false, "");

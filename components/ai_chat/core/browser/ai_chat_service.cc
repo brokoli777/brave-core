@@ -626,6 +626,37 @@ void AIChatService::RenameConversation(const std::string& id,
   OnConversationTitleChanged(conversation_handler, new_name);
 }
 
+void AIChatService::GetAvailableContent(GetAvailableContentCallback callback) {
+  std::move(callback).Run(
+      BuildAssocaitedContentsMetadata(associated_contents_));
+}
+
+void AIChatService::RegisterAssociatedContentsAvailable(
+    AssociatedContentDriver* content) {
+  associated_contents_.push_back(content);
+}
+
+void AIChatService::AssociatedContentsDestroyed(
+    AssociatedContentDriver* content) {
+  std::erase(associated_contents_, content);
+}
+
+void AIChatService::OnContentMetadataChanged() {
+  for (auto& remote : observer_remotes_) {
+    remote->OnAvailableContentChanged(
+        BuildAssocaitedContentsMetadata(associated_contents_));
+  }
+}
+
+AssociatedContentDriver* AIChatService::GetAssociatedContentForUrl(GURL url) {
+  for (auto* content : associated_contents_) {
+    if (content->GetURL() == url) {
+      return content;
+    }
+  }
+  return nullptr;
+}
+
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                             mojom::PremiumStatus status,
                                             mojom::PremiumInfoPtr info) {
