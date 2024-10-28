@@ -3,10 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-brave_ui_allow_circular_includes_from = []
-if (!is_android) {
-  brave_ui_allow_circular_includes_from += [
-    "//brave/browser/ui/webui/brave_new_tab",
-    "//brave/browser/ui/webui/brave_news_internals",
+import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("common") {
+  sources = [
+    "features.cc",
+    "features.h",
   ]
+
+  deps = [ "//base" ]
+}
+
+mojom("mojom") {
+  sources = [ "new_tab_page.mojom" ]
 }
