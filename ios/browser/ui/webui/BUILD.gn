@@ -29,6 +29,7 @@ source_set("webui") {
     "//ios/chrome/browser/webui/ui_bundled:webui_internal",
     "//ios/components/webui:url_constants",
     "//ios/web/public/webui",
+    "//ios/web/webui:webui",
     "//services/network/public/cpp",
     "//services/service_manager/public/cpp",
     "//third_party/abseil-cpp:absl",
