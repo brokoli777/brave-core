@@ -67,11 +67,8 @@ struct PageSecurityView: View {
         URLElidedText(text: displayURL)
           .font(.headline)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-          .truncationMode(.tail)
           .frame(maxWidth: .infinity, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
-          .environment(\.layoutDirection, .leftToRight)
-          .flipsForRightToLeftLayoutDirection(false)
 
         HStack(alignment: .firstTextBaseline) {
           warningIcon
