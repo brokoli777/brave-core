@@ -473,7 +473,7 @@ class TabLocationView: UIView {
           urlDisplayLabel.text = URLFormatter.formatURL(
             URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
             formatTypes: [
-              .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
+              .omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains,
             ],
             unescapeOptions: .normal
           )
@@ -548,7 +548,6 @@ private class DisplayURLLabel: UILabel {
   }
 
   private var textSize: CGSize = .zero
-  private var isRightToLeft: Bool = false
   fileprivate var isWebScheme: Bool = false {
     didSet {
       updateClippingDirection()
@@ -570,7 +569,6 @@ private class DisplayURLLabel: UILabel {
       if oldValue != text {
         updateText()
         updateTextSize()
-        detectLanguageForNaturalDirectionClipping()
         updateClippingDirection()
       }
       setNeedsDisplay()
@@ -603,20 +601,10 @@ private class DisplayURLLabel: UILabel {
     setNeedsDisplay()
   }
 
-  private func detectLanguageForNaturalDirectionClipping() {
-    guard let text, let language = NLLanguageRecognizer.dominantLanguage(for: text) else { return }
-    switch language {
-    case .arabic, .hebrew, .persian, .urdu:
-      isRightToLeft = true
-    default:
-      isRightToLeft = false
-    }
-  }
-
   private func updateClippingDirection() {
     // Update clipping fade direction
-    clippingFade.gradientLayer.startPoint = .init(x: isRightToLeft || !isWebScheme ? 1 : 0, y: 0.5)
-    clippingFade.gradientLayer.endPoint = .init(x: isRightToLeft || !isWebScheme ? 0 : 1, y: 0.5)
+    clippingFade.gradientLayer.startPoint = .init(x: !isWebScheme ? 1 : 0, y: 0.5)
+    clippingFade.gradientLayer.endPoint = .init(x: !isWebScheme ? 0 : 1, y: 0.5)
   }
 
   @available(*, unavailable)
@@ -637,7 +625,7 @@ private class DisplayURLLabel: UILabel {
     super.layoutSubviews()
 
     clippingFade.frame = .init(
-      x: isRightToLeft || !isWebScheme ? bounds.width - 20 : 0,
+      x: !isWebScheme ? bounds.width - 20 : 0,
       y: 0,
       width: 20,
       height: bounds.height
@@ -651,7 +639,7 @@ private class DisplayURLLabel: UILabel {
     var rect = rect
     if textSize.width > bounds.width {
       let delta = (textSize.width - bounds.width)
-      if !isRightToLeft && isWebScheme {
+      if isWebScheme {
         rect.origin.x -= delta
         rect.size.width += delta
       }
