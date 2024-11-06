@@ -450,105 +450,9 @@ class TabLocationView: UIView {
     }
   }
 
-  // Implementation of https://unicode.org/reports/tr9/
-  // Perhaps better to use ICU
-  // Swift implementation of `ubidi_getBaseDirection`
-  // https://unicode-org.github.io/icu-docs/apidoc/dev/icu4c/ubidi_8h.html#a493510dbfe211553823922e3273399fd
-  // I have yet to find where Chromium does this logic :S
-  // The closest I found was: https://source.chromium.org/chromium/chromium/src/+/main:ios/chrome/browser/ui/omnibox/omnibox_text_field_ios.mm;l=274;drc=a45502c46d75f210c783e07384138379ea1e46e4;bpv=0;bpt=1
-  // and https://source.chromium.org/chromium/chromium/src/+/main:ui/gfx/text_elider.cc;l=804;drc=a45502c46d75f210c783e07384138379ea1e46e4
-
-  func isRenderedLTR(_ text: String) -> Bool {
-    var hasStrongL = false
-    var hasStrongR = false
-    var isMixed = false
-
-    for scalar in text.unicodeScalars {
-      // Skip control characters such as LTR and RTL characters which would sway the results
-      if scalar.properties.isBidiControl || scalar.properties.isBidiMirrored {
-        continue
-      }
-
-      // ASCII A-Z and a-z
-      if scalar.value >= 0x0041 && scalar.value <= 0x007A {
-        hasStrongL = true
-      } else if (scalar.value >= 0x0590 && scalar.value <= 0x05FF)  // Hebrew
-        || (scalar.value >= 0x0600 && scalar.value <= 0x06FF
-          || (scalar.value >= 0x0750 && scalar.value <= 0x077F))  // Arabic
-      {
-        hasStrongR = true
-      }
-
-      // Has both, so it's mixed languages :(
-      if hasStrongL && hasStrongR {
-        isMixed = true
-        break
-      }
-    }
-
-    if isMixed {
-      // Find leading white-space
-      let leadingChars = text.unicodeScalars.prefix { scalar in
-        return scalar.properties.isWhitespace || !scalar.properties.isBidiControl
-      }
-
-      for scalar in leadingChars {
-        // A-Z or a-z = LTR
-        if scalar.value >= 0x0041 && scalar.value <= 0x007A {
-          return true
-        } else if (scalar.value >= 0x0590 && scalar.value <= 0x05FF)  // Hebrew control chars
-          || (scalar.value >= 0x0600 && scalar.value <= 0x06FF)  // Arabic control chars
-        {
-          return false
-        }
-      }
-
-      return true  // fallback to LTR
-    }
-
-    if hasStrongL {
-      return true
-    }
-
-    if hasStrongR {
-      return false
-    }
-
-    return true  // fallback to LTR
-  }
-
   // We must always set isWebScheme before setting the URLDisplayLabel text (so it will display the clipping fade correctly)
   private func updateURLBarWithText() {
     guard let urlDisplayLabel = urlDisplayLabel as? DisplayURLLabel else { return }
-
-    let isLeftToRight = { (host: String, url: URL) in
-
-      // To determine if a URL is left-to-right displayed, we first have to decode the PunyCode.
-      // That's the only way to determine how the string will render.
-      // URLFormatter does this for us.
-
-      let scheme = url.scheme ?? "http"
-      var renderedURL = URLFormatter.formatURL(
-        url.absoluteString,
-        formatTypes: [.omitDefaults, .omitTrivialSubdomains, .omitTrailingSlashOnBareHostname],
-        unescapeOptions: .normal
-      )
-
-      // Strip prefixes
-      if let range = renderedURL.range(of: "^(www|mobile|m)\\.", options: .regularExpression) {
-        renderedURL.replaceSubrange(range, with: "")
-      }
-
-      // Strip scheme
-      if let range = renderedURL.range(
-        of: "^(\(scheme)://|\(scheme):)",
-        options: .regularExpression
-      ) {
-        renderedURL.replaceSubrange(range, with: "")
-      }
-
-      return self.isRenderedLTR(renderedURL)
-    }
 
     if let url = url {
       if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
@@ -565,8 +469,6 @@ class TabLocationView: UIView {
           urlDisplayLabel.isLeftToRight = true
           urlDisplayLabel.text = ""
         } else {
-          let host = url.baseDomain ?? url.host ?? URLOrigin(url: url).host
-
           urlDisplayLabel.text = URLFormatter.formatURL(
             URLOrigin(url: url).url?.absoluteString ?? url.absoluteString,
             formatTypes: [
@@ -576,7 +478,7 @@ class TabLocationView: UIView {
           )
 
           urlDisplayLabel.isLeftToRight =
-            !["http", "https"].contains(url.scheme ?? "") || !isLeftToRight(host, url)
+            !["http", "https"].contains(url.scheme ?? "") || !url.isLTRRendered
         }
       }
     } else {
