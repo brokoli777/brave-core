@@ -3,6 +3,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import BraveStrings
 import Combine
 import DesignSystem
@@ -576,7 +577,6 @@ private class DisplayURLLabel: UILabel {
   }
 
   private func updateTextSize() {
-    textSize = attributedText?.size() ?? .zero
     textSize = (text as? NSString)?.size(withAttributes: [.font: font!]) ?? .zero
     setNeedsLayout()
     setNeedsDisplay()
