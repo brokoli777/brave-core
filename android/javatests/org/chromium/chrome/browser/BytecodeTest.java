@@ -1160,6 +1160,7 @@ public class BytecodeTest {
                         FullscreenManager.class,
                         TabObscuringHandler.class,
                         int.class,
+                        int.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         Supplier.class));
