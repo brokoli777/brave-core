@@ -311,8 +311,8 @@ void BraveTabContainer::PaintBoundingBoxForTile(gfx::Canvas& canvas,
   const int offset =
       is_pinned_tab_container ? 0 : tab_strip_model->IndexOfFirstNonPinnedTab();
 
-  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first) - offset;
-  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second) - offset;
+  auto tab1_index = tab_strip_model->GetIndexOfTab(tile.first.Get()) - offset;
+  auto tab2_index = tab_strip_model->GetIndexOfTab(tile.second.Get()) - offset;
   if (!controller_->IsValidModelIndex(tab1_index) ||
       !controller_->IsValidModelIndex(tab2_index)) {
     // In case the tiled tab is not in this container, this can happen.
