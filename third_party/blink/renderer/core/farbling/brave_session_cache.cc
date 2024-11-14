@@ -274,7 +274,7 @@ void BraveSessionCache::Init() {
   RegisterAllowFontFamilyCallback(base::BindRepeating(&brave::AllowFontFamily));
 }
 
-void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
+void BraveSessionCache::FarbleAudioChannel(base::span<float> dst) {
   if (!audio_farbling_helper_) {
     // This call is only expensive the first time; afterwards it returns
     // a cached value:
@@ -290,7 +290,7 @@ void BraveSessionCache::FarbleAudioChannel(float* dst, size_t count) {
         fudge_factor, seed,
         audio_farbling_level == BraveFarblingLevel::MAXIMUM);
   }
-  audio_farbling_helper_->FarbleAudioChannel(dst, count);
+  audio_farbling_helper_->FarbleAudioChannel(dst);
 }
 
 void BraveSessionCache::PerturbPixels(const unsigned char* data, size_t size) {
