@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/browser/ui/webui/brave_new_tab/update_observer.h"
 #include "brave/components/brave_new_tab/common/new_tab_page.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -20,9 +21,18 @@
 
 class CustomBackgroundFileManager;
 class PrefService;
+class TemplateURLService;
+
+namespace brave_private_cdn {
+class PrivateCDNRequestHelper;
+}
 
 namespace ntp_background_images {
 class ViewCounterService;
+}
+
+namespace tabs {
+class TabInterface;
 }
 
 namespace brave_new_tab {
@@ -35,7 +45,10 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
       std::unique_ptr<CustomImageChooser> custom_image_chooser,
       std::unique_ptr<CustomBackgroundFileManager> custom_file_manager,
-      PrefService* pref_service,
+      std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper,
+      tabs::TabInterface& tab,
+      PrefService& pref_service,
+      TemplateURLService& template_url_service,
       ntp_background_images::ViewCounterService* view_counter_service,
       bool is_restored_page);
 
@@ -43,6 +56,8 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
 
   // mojom::NewTabPageHandler:
   void SetNewTabPage(mojo::PendingRemote<mojom::NewTabPage> page) override;
+  void LoadResourceFromPcdn(const std::string& url,
+                            LoadResourceFromPcdnCallback callback) override;
   void GetBackgroundsEnabled(GetBackgroundsEnabledCallback callback) override;
   void SetBackgroundsEnabled(bool enabled,
                              SetBackgroundsEnabledCallback callback) override;
@@ -63,6 +78,23 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void AddCustomBackgrounds(AddCustomBackgroundsCallback callback) override;
   void RemoveCustomBackground(const std::string& background_url,
                               RemoveCustomBackgroundCallback callback) override;
+  void GetShowSearchBox(GetShowSearchBoxCallback callback) override;
+  void SetShowSearchBox(bool show_search_box,
+                        SetShowSearchBoxCallback callback) override;
+  void GetLastUsedSearchEngine(
+      GetLastUsedSearchEngineCallback callback) override;
+  void SetLastUsedSearchEngine(
+      const std::string& engine_host,
+      SetLastUsedSearchEngineCallback callback) override;
+  void GetAvailableSearchEngines(
+      GetAvailableSearchEnginesCallback callback) override;
+  void OpenSearch(const std::string& query,
+                  const std::string& engine,
+                  mojom::EventDetailsPtr details,
+                  OpenSearchCallback callback) override;
+  void OpenURLFromSearch(const std::string& url,
+                         mojom::EventDetailsPtr details,
+                         OpenURLFromSearchCallback callback) override;
 
  private:
   void OnCustomBackgroundsSelected(ShowCustomBackgroundChooserCallback callback,
@@ -82,10 +114,13 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   UpdateObserver update_observer_;
   std::unique_ptr<CustomImageChooser> custom_image_chooser_;
   std::unique_ptr<CustomBackgroundFileManager> custom_file_manager_;
-  raw_ptr<PrefService> pref_service_;
+  std::unique_ptr<brave_private_cdn::PrivateCDNRequestHelper> pcdn_helper_;
+  raw_ref<tabs::TabInterface> tab_;
+  raw_ref<PrefService> pref_service_;
+  raw_ref<TemplateURLService> template_url_service_;
   raw_ptr<ntp_background_images::ViewCounterService> view_counter_service_;
-  std::vector<base::FilePath> custom_image_paths_;
   bool page_restored_ = false;
+  std::vector<base::FilePath> custom_image_paths_;
 };
 
 }  // namespace brave_new_tab

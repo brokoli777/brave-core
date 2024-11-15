@@ -10,13 +10,12 @@
 
 namespace brave_new_tab {
 
-UpdateObserver::UpdateObserver(PrefService* pref_service,
+UpdateObserver::UpdateObserver(PrefService& pref_service,
                                base::RepeatingCallback<void(Source)> callback)
     : callback_(callback) {
-  CHECK(pref_service);
   CHECK(callback_);
 
-  pref_change_registrar_.Init(pref_service);
+  pref_change_registrar_.Init(&pref_service);
   AddPrefListener(ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
                   Source::kBackgroundPrefs);
   AddPrefListener(ntp_background_images::prefs::

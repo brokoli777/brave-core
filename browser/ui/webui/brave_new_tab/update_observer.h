@@ -21,7 +21,7 @@ class UpdateObserver {
  public:
   enum class Source { kBackgroundPrefs };
 
-  UpdateObserver(PrefService* pref_service,
+  UpdateObserver(PrefService& pref_service,
                  base::RepeatingCallback<void(Source)> callback);
   ~UpdateObserver();
 

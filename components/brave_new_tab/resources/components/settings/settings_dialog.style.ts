@@ -11,6 +11,8 @@ export const style = scoped.css`
     --leo-dialog-width: 720px;
     --leo-dialog-padding: 0;
     --leo-dialog-background: ${color.container.background};
+
+    height: 0;
   }
 
   h3 {

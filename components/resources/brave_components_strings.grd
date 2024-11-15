@@ -231,7 +231,7 @@
         Show search widget on the new tab page
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_ENABLE_SEARCH_ENGINES_TITLE" desc="Title above the list of search engines">
-        Enable search engines on the New Tab Page
+        Enabled search engines
       </message>
       <message name="IDS_BRAVE_NEW_TAB_SEARCH_CUSTOMIZE_SEARCH_ENGINES">
         Customize available engines

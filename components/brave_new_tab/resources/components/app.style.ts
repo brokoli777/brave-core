@@ -26,6 +26,22 @@ export const style = scoped.css`
     }
   }
 
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 100vh;
+    padding-top: 40px;
+  }
+
+  .topsites-container {
+    min-height: 16px;
+  }
+
+  .searchbox-container {
+    flex: 1 1 auto;
+  }
+
 `
 
 global('global-app-styles').css`

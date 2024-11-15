@@ -6,27 +6,10 @@
 import * as React from 'react'
 
 import { useNewTabState } from './new_tab_context'
+import { useCallbackWrapper } from '../lib/use_callback_wrapper'
+import { loadImage } from '../lib/image_loader'
 
 import { style } from './background.style'
-
-// Loads an image in the background and resolves when the image has either
-// loaded or was unable to load.
-function loadImageInBackground(url: string): Promise<void> {
-  return new Promise((resolve) => {
-    if (!url) {
-      resolve()
-    }
-    const onReady = () => {
-      image.removeEventListener('load', onReady)
-      image.removeEventListener('error', onReady)
-      resolve()
-    }
-    const image = new Image()
-    image.addEventListener('load', onReady)
-    image.addEventListener('error', onReady)
-    image.src = url
-  })
-}
 
 function setBackgroundVariable(value: string) {
   if (value) {
@@ -37,17 +20,17 @@ function setBackgroundVariable(value: string) {
 }
 
 function ImageBackground(props: { url: string }) {
+  const wrapCallback = useCallbackWrapper()
+
   // In order to avoid a "flash-of-unloaded-image", load the image in the
   // background and only update the background CSS variable when the image has
   // finished loading.
   React.useEffect(() => {
-    let cancel = false
-    loadImageInBackground(props.url).then(() => {
-      if (!cancel) {
+    loadImage(props.url).then(wrapCallback((loaded) => {
+      if (loaded) {
         setBackgroundVariable(`url(${CSS.escape(props.url)})`)
       }
-    })
-    return () => { cancel = true }
+    }))
   }, [props.url])
 
   return <div className='image-background' />

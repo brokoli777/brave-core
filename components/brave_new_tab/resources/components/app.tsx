@@ -6,26 +6,39 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+import { SearchBox } from './search/search_box'
 import { Background } from './background'
-import { SettingsDialog } from './settings/settings_dialog'
+import { SettingsDialog, SettingsView } from './settings/settings_dialog'
 
 import { style } from './app.style'
 
 export function App() {
-  const [showSettings, setShowSettings] = React.useState(false)
+  const [settingsView, setSettingsView] =
+    React.useState<SettingsView | null>(null)
 
   return (
     <div {...style}>
       <button
         className='settings'
-        onClick={() => setShowSettings(true)}
+        onClick={() => setSettingsView('background')}
       >
         <Icon name='settings' />
       </button>
+      <main>
+        <div className='topsites-container' />
+        <div className='searchbox-container'>
+          <SearchBox
+            onCustomizeSearchEngineList={() => setSettingsView('search')}
+          />
+        </div>
+      </main>
       <Background />
       {
-        showSettings &&
-          <SettingsDialog onClose={() => setShowSettings(false)} />
+        settingsView &&
+          <SettingsDialog
+            initialView={settingsView}
+            onClose={() => setSettingsView(null)}
+          />
       }
     </div>
   )

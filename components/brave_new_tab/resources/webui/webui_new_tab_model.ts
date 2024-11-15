@@ -10,6 +10,7 @@ import { NewTabModel, BackgroundType, defaultState } from '../models/new_tab_mod
 import { createStore } from '../lib/store'
 import { getCurrentBackground } from '../models/backgrounds'
 import { debounceEvent } from './debouncer'
+import { addCallbackListeners } from './callback_listeners'
 
 export function backgroundTypeFromMojo(type: number): BackgroundType {
   switch (type) {
@@ -32,9 +33,9 @@ export function backgroundTypeToMojo(type: BackgroundType) {
 }
 
 export function createNewTabModel(): NewTabModel {
-  const proxy = NewTabPageProxy.getInstance()
-  const pageHandler = proxy.handler
+  const { handler, callbackRouter} = NewTabPageProxy.getInstance()
   const store = createStore(defaultState())
+  const pcdnImageURLs = new Map<string, string>()
 
   function updateCurrentBackground() {
     store.update({
@@ -43,24 +44,24 @@ export function createNewTabModel(): NewTabModel {
   }
 
   async function updateBackgroundsEnabled() {
-    const { enabled } = await pageHandler.getBackgroundsEnabled()
+    const { enabled } = await handler.getBackgroundsEnabled()
     store.update({ backgroundsEnabled: enabled })
   }
 
   async function updateSponsoredImagesEnabled() {
-    const { enabled } = await pageHandler.getSponsoredImagesEnabled()
+    const { enabled } = await handler.getSponsoredImagesEnabled()
     store.update({ sponsoredImagesEnabled: enabled })
   }
 
   async function updateBraveBackgrounds() {
-    const { backgrounds } = await pageHandler.getBraveBackgrounds()
+    const { backgrounds } = await handler.getBraveBackgrounds()
     store.update({
       braveBackgrounds: backgrounds.map((item) => ({ type: 'brave', ...item }))
     })
   }
 
   async function updateSelectedBackground() {
-    const { background } = await pageHandler.getSelectedBackground()
+    const { background } = await handler.getSelectedBackground()
     if (background) {
       store.update({
         selectedBackgroundType: backgroundTypeFromMojo(background.type),
@@ -75,26 +76,27 @@ export function createNewTabModel(): NewTabModel {
   }
 
   async function updateCustomBackgrounds() {
-    const { backgrounds } = await pageHandler.getCustomBackgrounds()
+    const { backgrounds } = await handler.getCustomBackgrounds()
     store.update({ customBackgrounds: backgrounds })
   }
 
   async function updateSponsoredImageBackground() {
-    const { background } = await pageHandler.getSponsoredImageBackground()
+    const { background } = await handler.getSponsoredImageBackground()
     store.update({
       sponsoredImageBackground:
         background ? { type: 'sponsored', ...background } : null
     })
   }
 
-  proxy.callbackRouter.onBackgroundPrefsUpdated.addListener(
-    debounceEvent(async () => {
+  addCallbackListeners(callbackRouter, {
+    onBackgroundPrefsUpdated: debounceEvent(async () => {
       await Promise.all([
         updateCustomBackgrounds(),
         updateSelectedBackground(),
       ])
       updateCurrentBackground()
-    }))
+    })
+  })
 
   async function loadData() {
     await Promise.all([
@@ -116,14 +118,29 @@ export function createNewTabModel(): NewTabModel {
 
     addListener: store.addListener,
 
+    async getPcdnImageURL(url) {
+      const cachedURL = pcdnImageURLs.get(url)
+      if (cachedURL) {
+        return cachedURL
+      }
+      const { resourceData } = await handler.loadResourceFromPcdn(url)
+      if (!resourceData) {
+        throw new Error('Image resource could not be loaded from PCDN')
+      }
+      const blob = new Blob([new Uint8Array(resourceData)], { type: 'image/*' })
+      const objectURL = URL.createObjectURL(blob)
+      pcdnImageURLs.set(url, objectURL)
+      return objectURL
+    },
+
     setBackgroundsEnabled(enabled) {
       store.update({ backgroundsEnabled: enabled })
-      pageHandler.setBackgroundsEnabled(enabled)
+      handler.setBackgroundsEnabled(enabled)
     },
 
     setSponsoredImagesEnabled(enabled) {
       store.update({ sponsoredImagesEnabled: enabled })
-      pageHandler.setSponsoredImagesEnabled(enabled)
+      handler.setSponsoredImagesEnabled(enabled)
     },
 
     selectBackground(type, value) {
@@ -131,20 +148,20 @@ export function createNewTabModel(): NewTabModel {
         selectedBackgroundType: type,
         selectedBackground: value
       })
-      pageHandler.selectBackground({ type: backgroundTypeToMojo(type), value })
+      handler.selectBackground({ type: backgroundTypeToMojo(type), value })
     },
 
     async showCustomBackgroundChooser() {
-      const { imagesSelected } = await pageHandler.showCustomBackgroundChooser()
+      const { imagesSelected } = await handler.showCustomBackgroundChooser()
       return imagesSelected
     },
 
     async addCustomBackgrounds() {
-      await pageHandler.addCustomBackgrounds()
+      await handler.addCustomBackgrounds()
     },
 
     async removeCustomBackground(background) {
-      await pageHandler.removeCustomBackground(background)
+      await handler.removeCustomBackground(background)
     }
   }
 }
