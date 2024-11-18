@@ -44,7 +44,8 @@ std::string GetFunctionHash(const std::string& input) {
 eth_abi::Bytes4 GetFunctionHashBytes4(const std::string& input) {
   eth_abi::Bytes4 bytes_result;
   base::span(bytes_result)
-      .copy_from(base::span(KeccakHash(base::as_byte_span(input))).first<4>());
+      .copy_from(
+          base::as_byte_span(KeccakHash(base::as_byte_span(input))).first<4>());
   return bytes_result;
 }
 
