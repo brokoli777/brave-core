@@ -59,6 +59,7 @@ const defaultContext: AIChatContext = {
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
   onNewConversation: () => { },
+  onNewMultiTabConversation: () => {},
   onSelectConversationUuid: () => { },
 
   editingConversationId: null,

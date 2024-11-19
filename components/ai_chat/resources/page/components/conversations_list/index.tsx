@@ -124,7 +124,6 @@ export default function ConversationsList(props: ConversationsListProps) {
                     className={classnames({
                       [styles.navItem]: true,
                       [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
-                      [styles.navItemActive]: item.uuid === conversationContext.conversationUuid
                     })}
                     onClick={() => {
                       aiChatContext.onSelectConversationUuid(item.uuid)

@@ -45,6 +45,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
+#include "brave/components/ai_chat/core/browser/associated_multi_tab_content.h"
 #include "brave/components/ai_chat/core/browser/local_models_updater.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -522,24 +523,50 @@ void ConversationHandler::GetState(GetStateCallback callback) {
   std::move(callback).Run(std::move(state));
 }
 
-void ConversationHandler::AddTabToMultiTabContent(const GURL& url) {
-  if (!multi_tab_content_) {
+void ConversationHandler::AddAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
     return;
   }
-  auto* content = ai_chat_service_->GetAssociatedContentForUrl(url);
+  AssociatedContentDriver* content =
+      ai_chat_service_->GetAssociatedContentForUrl(url);
   if (!content) {
     return;
   }
-  multi_tab_content_->AddContent(content);
+  if (multi_tab_content_) {
+    multi_tab_content_->AddContent(content);
+  } else if (associated_content_delegate_) {
+    // Already associated with a single tab, cannot change it. User should
+    // not get in this UI state and should be offered to start a new
+    // conversation.
+    return;
+  } else {
+    // Can associate
+    std::vector<AssociatedContentDriver*> contentses{content};
+    SetMultiTabContent(std::make_unique<AssociatedMultiTabContent>(
+        std::move(contentses), url_loader_factory_));
+  }
+  suggestions_.clear();
   OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
-void ConversationHandler::RemoveTabFromMultiTabContent(const GURL& url) {
-  if (!multi_tab_content_) {
+void ConversationHandler::RemoveAssociatedTab(const GURL& url) {
+  if (HasAnyHistory()) {
     return;
   }
-  multi_tab_content_->RemoveContent(url);
+  if (multi_tab_content_) {
+    multi_tab_content_->RemoveContent(url);
+  } else if (associated_content_delegate_ &&
+             associated_content_delegate_->GetURL() == url) {
+    associated_content_delegate_ = nullptr;
+  } else {
+    return;
+  }
+  suggestions_.clear();
   OnAssociatedContentInfoChanged();
+  MaybeSeedOrClearSuggestions();
+  MaybeFetchOrClearContentStagedConversation();
 }
 
 void ConversationHandler::RateMessage(bool is_liked,

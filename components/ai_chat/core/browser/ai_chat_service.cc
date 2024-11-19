@@ -9,6 +9,7 @@
 #include <compare>
 #include <functional>
 #include <ios>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -86,6 +87,20 @@ bool IsConversationUpdatedTimeWithinRange(
            conversation->updated_time <= end_time));
 }
 
+std::vector<mojom::WebSiteInfoDetailPtr> BuildAssociatedContentsMetadata(
+    const std::vector<AssociatedContentDriver*>& associated_contents) {
+  std::vector<mojom::WebSiteInfoDetailPtr> details;
+  for (const AssociatedContentDriver* content : associated_contents) {
+    mojom::SiteInfoDetailPtr detail = content->GetAssociatedContentDetail();
+    if (detail->is_web_site_info() &&
+        base::Contains(kAllowedSchemes,
+                       detail->get_web_site_info()->url.scheme())) {
+      details.push_back(std::move(detail->get_web_site_info()));
+    }
+  }
+  return details;
+}
+
 }  // namespace
 
 AIChatService::AIChatService(
@@ -149,7 +164,8 @@ ConversationHandler* AIChatService::CreateConversation() {
   {
     mojom::ConversationPtr conversation = mojom::Conversation::New(
         conversation_uuid, "", base::Time::Now(), false, std::nullopt,
-        mojom::SiteInfo::New(base::Uuid::GenerateRandomV4().AsLowercaseString(),
+        mojom::SiteInfo::New(mojom::AssociatedContentType::None, nullptr,
+                             base::Uuid::GenerateRandomV4().AsLowercaseString(),
                              mojom::ContentType::PageContent, std::nullopt,
                              std::nullopt, std::nullopt, 0, false, false));
     conversations_.insert_or_assign(conversation_uuid, std::move(conversation));
@@ -614,21 +630,9 @@ void AIChatService::DeleteConversation(const std::string& id) {
   }
 }
 
-void AIChatService::RenameConversation(const std::string& id,
-                                       const std::string& new_name) {
-  ConversationHandler* conversation_handler =
-      conversation_handlers_.at(id).get();
-  if (!conversation_handler) {
-    return;
-  }
-
-  DVLOG(1) << "Renamed conversation " << id << " to '" << new_name << "'";
-  OnConversationTitleChanged(conversation_handler, new_name);
-}
-
 void AIChatService::GetAvailableContent(GetAvailableContentCallback callback) {
   std::move(callback).Run(
-      BuildAssocaitedContentsMetadata(associated_contents_));
+      BuildAssociatedContentsMetadata(associated_contents_));
 }
 
 void AIChatService::RegisterAssociatedContentsAvailable(
@@ -644,7 +648,7 @@ void AIChatService::AssociatedContentsDestroyed(
 void AIChatService::OnContentMetadataChanged() {
   for (auto& remote : observer_remotes_) {
     remote->OnAvailableContentChanged(
-        BuildAssocaitedContentsMetadata(associated_contents_));
+        BuildAssociatedContentsMetadata(associated_contents_));
   }
 }
 
@@ -655,6 +659,18 @@ AssociatedContentDriver* AIChatService::GetAssociatedContentForUrl(GURL url) {
     }
   }
   return nullptr;
+}
+
+void AIChatService::RenameConversation(const std::string& id,
+                                       const std::string& new_name) {
+  ConversationHandler* conversation_handler =
+      conversation_handlers_.at(id).get();
+  if (!conversation_handler) {
+    return;
+  }
+
+  DVLOG(1) << "Renamed conversation " << id << " to '" << new_name << "'";
+  OnConversationTitleChanged(conversation_handler, new_name);
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

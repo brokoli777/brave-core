@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import Button from '@brave/leo/react/button'
-import Dropdown from '@brave/leo/react/dropdown'
 import Icon from '@brave/leo/react/icon'
 import useMediaQuery from '$web-common/useMediaQuery'
 import { useAIChat } from '../../state/ai_chat_context'
@@ -12,6 +11,109 @@ import ConversationsList from '../conversations_list'
 import { NavigationHeader } from '../header'
 import Main from '../main'
 import styles from './style.module.scss'
+import { useConversation } from '../../state/conversation_context'
+import * as React from 'react'
+import Dropdown from '@brave/leo/react/dropdown'
+import styled from 'styled-components'
+import Flex from '$web-common/Flex'
+import { color, radius, spacing } from '@brave/leo/tokens/css/variables'
+import { Url as MojomUrl } from 'gen/url/mojom/url.mojom.m'
+import * as mojom from '../../api'
+
+const TabEntryListItem = styled.li`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: ${spacing.m};
+  & span {
+    flex: 1;
+    max-height: 1.2rem;
+    overflow: clip;
+  }
+  & leo-button {
+    flex: 0;
+  }
+`
+
+const FavIconImage = styled.div<{ url: string }>`
+  display: inline-block;
+  background-image: url("${p => p.url}");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-origin: content-box;
+  padding: 2px;
+  border-radius: ${radius.s};
+  border: 1px solid ${color.divider.subtle};
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+`
+
+function TabImage(props: { url: MojomUrl }) {
+  const aiChatContext = useAIChat()
+  const [imgUrl, setImgUrl] = React.useState<string | null>()
+  React.useEffect(() => {
+    if (!aiChatContext.uiHandler) {
+      return
+    }
+    aiChatContext.uiHandler.getFaviconImageDataForContent(props.url)
+      .then(({ faviconImageData }) => {
+        if (!faviconImageData) {
+          setImgUrl(null)
+          return
+        }
+        const blob = new Blob([new Uint8Array(faviconImageData)], { type: 'image/*' })
+        setImgUrl(URL.createObjectURL(blob))
+      })
+  }, [props.url.url])
+
+  if (imgUrl === null) {
+    return <FavIconImage url='//resources/brave-icons/file-text.svg' />
+  }
+
+  if (!imgUrl) {
+    return null
+  }
+
+  return <FavIconImage url={imgUrl} />
+}
+
+function TabEntry(props: {
+  site: mojom.WebSiteInfoDetail
+  canRemove: boolean
+}) {
+  const context = useConversation()
+
+  return <TabEntryListItem>
+    <TabImage url={props.site.url} />
+    <span>{props.site.title}</span>
+    {props.canRemove &&
+      <Button fab kind="plain-faint" title={'Remove this tab from the conversation'} onClick={() => context.conversationHandler?.removeAssociatedTab(props.site.url)}>
+        <Icon name='close' />
+      </Button>
+    }
+  </TabEntryListItem>
+}
+
+function SitePicker(props: { disabled: boolean }) {
+  const conversation = useConversation()
+  const aiChat = useAIChat()
+
+  const availableSites = React.useMemo(() => {
+    const used = new Set(conversation.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites.map(a => a.url.url))
+    return aiChat.availableAssociatedContent.filter(w => !used.has(w.url.url))
+  }, [aiChat.availableAssociatedContent, conversation.associatedContentInfo])
+
+  return <Dropdown value='' disabled={props.disabled} placeholder='Add a tab to the conversation' onChange={e => conversation.conversationHandler?.addAssociatedTab({ url: e.value ?? '' })}>
+    <span slot="value">Add a tab to the conversation</span>
+    {availableSites.map((a, i) => <leo-option key={i} value={a.url.url}>
+      <Flex align='center' gap={8} style={{ maxWidth: '500px' }} title={a.title}>
+        <TabImage url={a.url} /> <span>{a.title}</span>
+      </Flex>
+    </leo-option>)}
+  </Dropdown>
+}
 
 export default function FullScreen() {
   const aiChatContext = useAIChat()
@@ -91,13 +193,13 @@ export default function FullScreen() {
     <div className={styles.fullscreen}>
       <div className={styles.left}>
         <div className={styles.controls}>
-              <Button
-              fab
-              kind='plain-faint'
-              onClick={toggleAside}
-              >
-              <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
-              </Button>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={toggleAside}
+          >
+            <Icon name={asideAnimationRef.current?.playbackRate === 1 ? 'sidenav-expand' : 'sidenav-collapse'} />
+          </Button>
           {!isNavigationRendered && (
             <>
               <Button
@@ -128,10 +230,10 @@ export default function FullScreen() {
       {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
         <div className={styles.headerSpacer} />
         <h3>Tabs used in this conversation</h3>
-        <SitePicker />
+        <SitePicker disabled={false} />
         <ul>
           {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) =>
-            <TabEntry key={i} site={t} />)}
+            <TabEntry canRemove key={i} site={t} />)}
         </ul>
       </div>}
     </div>

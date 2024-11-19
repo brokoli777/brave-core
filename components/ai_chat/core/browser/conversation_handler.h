@@ -90,6 +90,12 @@ class ConversationHandler : public mojom::ConversationHandler,
     virtual void AddRelatedConversation(ConversationHandler* conversation) {}
     virtual void OnRelatedConversationDisassociated(
         ConversationHandler* conversation) {}
+
+    // General type of content this AssociatedContentDelegate represents
+    virtual mojom::AssociatedContentType GetAssociatedContentType() const;
+
+    virtual mojom::SiteInfoDetailPtr GetAssociatedContentDetail() const;
+
     // Unique ID for the content. For browser Tab content, this should be
     // a navigation ID that's re-used during back navigations.
     virtual int GetContentId() const = 0;
@@ -218,12 +224,16 @@ class ConversationHandler : public mojom::ConversationHandler,
   // content, this conversation can be reunited with the delegate.
   void SetAssociatedContentDelegate(
       base::WeakPtr<AssociatedContentDelegate> delegate);
+  void SetMultiTabContent(std::unique_ptr<AssociatedMultiTabContent> delegate);
+
   const mojom::Model& GetCurrentModel();
   const std::vector<mojom::ConversationTurnPtr>& GetConversationHistory() const;
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void AddAssociatedTab(const GURL& url) override;
+  void RemoveAssociatedTab(const GURL& url) override;
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
                    RateMessageCallback callback) override;
@@ -266,6 +276,7 @@ class ConversationHandler : public mojom::ConversationHandler,
                                   mojom::ActionType action_type,
                                   mojom::APIError error);
   void OnFaviconImageDataChanged();
+  void OnAssociatedContentInfoChanged();
   void OnUserOptedIn();
 
   // Some associated content may provide some conversation that the user wants
@@ -391,7 +402,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnConversationEntryAdded(mojom::ConversationTurnPtr& entry);
   void OnConversationEntryRemoved(std::optional<std::string> turn_id);
   void OnSuggestedQuestionsChanged();
-  void OnAssociatedContentInfoChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string title);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
@@ -401,6 +411,7 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   base::WeakPtr<AssociatedContentDelegate> associated_content_delegate_;
   std::unique_ptr<AssociatedArchiveContent> archive_content_;
+  std::unique_ptr<AssociatedMultiTabContent> multi_tab_content_;
 
   std::string model_key_;
   // Chat conversation entries
