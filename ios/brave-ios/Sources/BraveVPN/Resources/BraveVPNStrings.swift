@@ -920,7 +920,7 @@ extension Strings {
         "vpn.settingsVPNSmartProxyDescription",
         bundle: .module,
         value:
-          "A Smart Proxy is an intermediary server that intelligently directs traffic while applying certain conditions, to meet a specific goal or need.",
+          "Smart Proxy Routing ensures traffic is routed through dedicated proxy servers to allow access to commonly restricted content/sites or third-party services, such as Netflix, Hulu, BBC iPlayer, Pandora, etc.",
         comment:
           "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )
