@@ -152,6 +152,16 @@ public class BraveVPN {
     }
   }
 
+  public static var isKillSwitchEnabled: Bool {
+    get {
+      helper.killSwitchEnabled
+    }
+
+    set {
+      helper.killSwitchEnabled = newValue
+    }
+  }
+
   /// Returns true if the user is connected to Brave's vpn at the moment.
   /// This will return true if the user is connected to other VPN.
   public static var isConnected: Bool {

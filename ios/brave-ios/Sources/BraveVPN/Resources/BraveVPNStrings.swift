@@ -924,5 +924,25 @@ extension Strings {
         comment:
           "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )
+
+    public static let settingsVPNKillSwitchTitle =
+      NSLocalizedString(
+        "vpn.settingsVPNKillSwitchTitle",
+        bundle: .module,
+        value:
+          "Enable Kill Switch",
+        comment:
+          "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
+      )
+
+    public static let settingsVPNKillSwitchDescription =
+      NSLocalizedString(
+        "vpn.settingsVPNKillSwitchDescription",
+        bundle: .module,
+        value:
+          "When enabled, if your VPN connection drops unexpectedly, your device will automatically be disconnected from the internet, to prevent IP-Address and Data leaks.",
+        comment:
+          "The title of the toggle in settings that disconnects the internet connection, when not connected to the VPN. Emergency Shutoff, Kill Switch, Safety Switch, etc."
+      )
   }
 }

@@ -35,6 +35,7 @@ public class BraveVPNSettingsViewController: TableViewController {
   private let resetCellId = "reset"
   private let vpnStatusSectionCellId = "vpnStatus"
   private let vpnSmartProxySectionCellId = "vpnSmartProxy"
+  private let vpnKillSwitchSectionCellId = "vpnKillSwitch"
 
   private var vpnConnectionStatusSwitch: SwitchAccessoryView?
 
@@ -138,6 +139,13 @@ public class BraveVPNSettingsViewController: TableViewController {
       }
     )
 
+    let vpnKillSwitchToggleView = SwitchAccessoryView(
+      initialValue: BraveVPN.isKillSwitchEnabled,
+      valueChange: { isKillSwitchEnabled in
+        BraveVPN.isKillSwitchEnabled = isKillSwitchEnabled
+      }
+    )
+
     if Preferences.VPN.vpnReceiptStatus.value
       == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
     {
@@ -158,6 +166,12 @@ public class BraveVPNSettingsViewController: TableViewController {
           detailText: Strings.VPN.settingsVPNSmartProxyDescription,
           accessory: .view(vpnSmartProxyToggleView),
           uuid: vpnSmartProxySectionCellId
+        ),
+        Row(
+          text: Strings.VPN.settingsVPNKillSwitchTitle,
+          detailText: Strings.VPN.settingsVPNKillSwitchDescription,
+          accessory: .view(vpnKillSwitchToggleView),
+          uuid: vpnKillSwitchSectionCellId
         ),
       ],
       uuid: vpnStatusSectionCellId
