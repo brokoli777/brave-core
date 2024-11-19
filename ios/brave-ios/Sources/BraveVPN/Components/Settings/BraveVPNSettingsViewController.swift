@@ -155,6 +155,7 @@ public class BraveVPNSettingsViewController: TableViewController {
         ),
         Row(
           text: Strings.VPN.settingsVPNSmartProxyEnabled,
+          detailText: Strings.VPN.settingsVPNSmartProxyDescription,
           accessory: .view(vpnSmartProxyToggleView),
           uuid: vpnSmartProxySectionCellId
         ),

@@ -911,8 +911,18 @@ extension Strings {
       NSLocalizedString(
         "vpn.settingsVPNSmartProxyEnabled",
         bundle: .module,
-        value: "Use Smart Proxy",
+        value: "Enable Smart Proxy",
         comment: "Whether the VPN's Smart-Proxy feature is enabled or not"
+      )
+
+    public static let settingsVPNSmartProxyDescription =
+      NSLocalizedString(
+        "vpn.settingsVPNSmartProxyDescription",
+        bundle: .module,
+        value:
+          "A Smart Proxy is an intermediary server that intelligently directs traffic while applying certain conditions, to meet a specific goal or need.",
+        comment:
+          "The description of what a Smart Proxy is. Describes the Smart Proxy feature toggle in settings."
       )
   }
 }
