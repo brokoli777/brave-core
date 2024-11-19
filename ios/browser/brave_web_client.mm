@@ -44,14 +44,10 @@ void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
 
   schemes->standard_schemes.push_back(kBraveUIScheme);
   schemes->secure_schemes.push_back(kBraveUIScheme);
-
-  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
-  schemes->secure_schemes.push_back(kChromeUIUntrustedScheme);
 }
 
 bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
-  return ChromeWebClient::IsAppSpecificURL(url) ||
-         url.SchemeIs(kBraveUIScheme) || url.SchemeIs(kChromeUIUntrustedScheme);
+  return ChromeWebClient::IsAppSpecificURL(url) || url.SchemeIs(kBraveUIScheme);
 }
 
 bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
@@ -74,9 +70,4 @@ void BraveWebClient::PostBrowserURLRewriterCreation(
     web::BrowserURLRewriter* rewriter) {
   rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
   ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
-}
-
-void BraveWebClient::GetAdditionalWebUISchemes(
-    std::vector<std::string>* additional_schemes) {
-  ChromeWebClient::GetAdditionalWebUISchemes(additional_schemes);
 }
