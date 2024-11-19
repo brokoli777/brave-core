@@ -124,6 +124,15 @@ export default function FullScreen() {
   const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(isSmall)
   const [isNavigationRendered, setIsNavigationRendered] = React.useState(!isSmall)
 
+  const associatedTabs: mojom.WebSiteInfoDetail[] =
+    chat.associatedContentInfo?.detail?.multipleWebSiteInfo?.sites
+    ?? (chat.associatedContentInfo?.detail?.webSiteInfo
+      ? [chat.associatedContentInfo.detail.webSiteInfo]
+      : [])
+  // Can't add or remove Tabs if conversation has history
+  // TODO(petemill): ignore staged content
+  const canModifyTabAssociation = chat.conversationHistory.length === 0 && !chat.isGenerating
+
   const initAsideAnimation = React.useCallback((node: HTMLElement | null) => {
     if (!node) return
     const open = { width: '340px', opacity: 1 }
@@ -227,15 +236,24 @@ export default function FullScreen() {
       <div className={styles.content}>
         <Main />
       </div>
-      {!!chat.associatedContentInfo?.detail?.multipleWebSiteInfo && <div className={styles.right}>
+      <div className={styles.right}>
         <div className={styles.headerSpacer} />
         <h3>Tabs used in this conversation</h3>
-        <SitePicker disabled={false} />
-        <ul>
-          {chat.associatedContentInfo.detail.multipleWebSiteInfo.sites.map((t, i) =>
-            <TabEntry canRemove key={i} site={t} />)}
-        </ul>
-      </div>}
+        <SitePicker disabled={!canModifyTabAssociation} />
+        {associatedTabs.length > 0 ? (
+          <ul>
+            {associatedTabs.map((t, i) => (
+              <TabEntry
+                key={i}
+                site={t}
+                canRemove={canModifyTabAssociation}
+              />
+            ))}
+          </ul>
+        ) : (
+          <p>No tabs are associated with this conversation</p>
+        )}
+      </div>
     </div>
   )
 }
