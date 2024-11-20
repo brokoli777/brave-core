@@ -17,8 +17,8 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/content/browser/full_screenshot_client.h"
+#include "brave/components/ai_chat/content/browser/full_screenshotter.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/pdf_utils.h"
 #include "brave/components/ai_chat/core/browser/associated_content_driver.h"
@@ -398,7 +398,6 @@ void AIChatTabHelper::OnFetchPageContentComplete(
 9   libcontent.dylib                    0x0000000120dc5c75 content::DevToolsAgentHostImpl::DevToolsAgentHostImpl(std::__Cr::basic_string<char, std::__Cr::char_traits<char>, std::__Cr::allocator<char>> const&) + 229
 10  libcontent.dylib                    0x0000000120ecab99 content::RenderFrameDevToolsAgentHost::RenderFrameDevToolsAgentHost(content::FrameTreeNode*, content::RenderFrameHostImpl*) + 57
 11  libcontent.dylib                    0x0000000120eca1c1 content::RenderFrameDevToolsAgentHost::GetOrCreateFor(content::FrameTreeNode*) + 161
-#endif
   full_screenshot_client_ = base::SequenceBound<FullScreenshotClient>(
       base::SequencedTaskRunner::GetCurrentDefault(),
       // base::ThreadPool::CreateSequencedTaskRunner(
@@ -410,13 +409,14 @@ void AIChatTabHelper::OnFetchPageContentComplete(
                                weak_ptr_factory_.GetWeakPtr(),
                                std::move(callback), content, is_video,
                                invalidation_token));
-
-#if 0
-  full_screenshotter_ = std::make_unique<FullScreenshotter>();
-  full_screenshotter_->CaptureScreenshot(web_contents(), base::BindOnce(
-      &AIChatTabHelper::OnCaptureScreenshotComplete, weak_ptr_factory_.GetWeakPtr(),
-      std::move(callback), content, is_video, invalidation_token));
 #endif
+
+  full_screenshotter_ = std::make_unique<FullScreenshotter>();
+  full_screenshotter_->CaptureScreenshot(
+      web_contents(),
+      base::BindOnce(&AIChatTabHelper::OnCaptureScreenshotComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     content, is_video, invalidation_token));
 
 #if 0
   content::RenderWidgetHostView* const view =
@@ -446,12 +446,12 @@ void AIChatTabHelper::OnCaptureScreenshotComplete(
     std::string content,
     bool is_video,
     std::string invalidation_token,
-    base::expected<std::string, std::string> result) {
+    base::expected<std::vector<std::string>, std::string> result) {
   full_screenshot_client_.Reset();
   if (result.has_value()) {
-    LOG(ERROR) << std::endl << "base64_img = b'" << result.value() <<"'";
+    LOG(ERROR) << result->size();
     std::move(callback).Run(std::move(content), is_video,
-                            std::move(invalidation_token), result.value());
+                            std::move(invalidation_token), result.value()[0]);
   } else {
     LOG(ERROR) << result.error();
     VLOG(1) << result.error();

@@ -182,7 +182,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
       std::string content,
       bool is_video,
       std::string invalidation_token,
-      base::expected<std::string, std::string> result);
+      base::expected<std::vector<std::string>, std::string> result);
 
   void OnExtractPrintPreviewContentComplete(GetPageContentCallback callback,
                                             std::string content);

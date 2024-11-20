@@ -7,29 +7,31 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_FULL_SCREENSHOTTER_H_
 
 #include <memory>
+#include <queue>
+#include <vector>
 
-#include "base/types/expected.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
 #include "components/paint_preview/browser/paint_preview_base_service.h"
 #include "components/paint_preview/public/paint_preview_compositor_service.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/geometry/rect.h"
 
 namespace ai_chat {
 
-class FullScreenshotter
-    : public paint_preview::PaintPreviewBaseService {
+class FullScreenshotter : public paint_preview::PaintPreviewBaseService {
  public:
   FullScreenshotter();
   FullScreenshotter(const FullScreenshotter&) = delete;
-  FullScreenshotter& operator=(const FullScreenshotter&) =
-      delete;
+  FullScreenshotter& operator=(const FullScreenshotter&) = delete;
   ~FullScreenshotter() override;
 
-  // <base64 encoded image, error>
-  using CaptureScreenshotCallback = base::OnceCallback<void(base::expected<std::string, std::string>)>;
+  // <base64 encoded images, error>
+  using CaptureScreenshotCallback = base::OnceCallback<void(
+      base::expected<std::vector<std::string>, std::string>)>;
   void CaptureScreenshot(const raw_ptr<content::WebContents> web_contents,
-      CaptureScreenshotCallback callback);
+                         CaptureScreenshotCallback callback);
 
  private:
   void OnScreenshotCaptured(
@@ -49,10 +51,27 @@ class FullScreenshotter
       CaptureScreenshotCallback callback,
       paint_preview::mojom::PaintPreviewCompositor::BeginCompositeStatus status,
       paint_preview::mojom::PaintPreviewBeginCompositeResponsePtr response);
+
+  struct PendingScreenshots {
+    PendingScreenshots();
+    ~PendingScreenshots();
+    std::queue<gfx::Rect> remaining_rects;
+    std::vector<std::string> completed_images;
+    CaptureScreenshotCallback callback;
+  };
+
+  static base::expected<std::string, std::string> EncodeBitmap(
+      const SkBitmap& bitmap);
   void OnBitmapReceived(
-      CaptureScreenshotCallback callback,
+      std::unique_ptr<PendingScreenshots> pending,
+      size_t index,
       paint_preview::mojom::PaintPreviewCompositor::BitmapStatus status,
       const SkBitmap& bitmap);
+  void OnBitmapEncoded(std::unique_ptr<PendingScreenshots> pending,
+                       size_t index,
+                       base::expected<std::string, std::string> result);
+
+  void CaptureNextScreenshot(std::unique_ptr<PendingScreenshots> pending);
 
   std::unique_ptr<paint_preview::PaintPreviewCompositorService,
                   base::OnTaskRunnerDeleter>
@@ -61,8 +80,10 @@ class FullScreenshotter
                   base::OnTaskRunnerDeleter>
       paint_preview_compositor_client_;
 
+  raw_ptr<content::WebContents> current_web_contents_;
+
   base::WeakPtrFactory<FullScreenshotter> weak_ptr_factory_{this};
 };
 
-} // namespace ai_chat
+}  // namespace ai_chat
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_FULL_SCREENSHOTTER_H_
