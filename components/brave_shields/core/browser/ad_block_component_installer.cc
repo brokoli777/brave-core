@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
+#include "brave/components/brave_component_updater/browser/component_contents_verifier.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
@@ -110,6 +111,9 @@ void AdBlockComponentInstallerPolicy::ComponentReady(
 bool AdBlockComponentInstallerPolicy::VerifyInstallation(
     const base::Value::Dict& manifest,
     const base::FilePath& install_dir) const {
+  auto lock = brave_component_updater::ComponentContentsVerifier::GetInstance()
+                  ->VerifyAndLock(install_dir);
+  lock.release();  // TODO(boocmp): Pass lock farther to ComponentReady.
   return true;
 }
 
