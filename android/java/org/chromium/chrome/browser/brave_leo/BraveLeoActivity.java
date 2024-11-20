@@ -99,9 +99,9 @@ public class BraveLeoActivity extends CustomTabActivity {
                         () -> mToolbarCoordinator,
                         () -> mIntentDataProvider,
                         mBackPressManager,
-                        () -> mTabController,
+                        () -> getCustomTabActivityTabController(),
                         () -> mMinimizationManagerHolder.getMinimizationManager(),
-                        () -> mFeatureOverridesManager,
+                        () -> getCustomTabFeatureOverridesManager(),
                         getBaseChromeLayout(),
                         getEdgeToEdgeStateProvider());
         return mBaseCustomTabRootUiCoordinator;
