@@ -7,6 +7,8 @@ import { CrIconElement } from './cr_icon-chromium.js'
 import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { injectStyle } from '//resources/brave/lit_overriding.js'
 
+import '//resources/brave/leo.bundle.js';
+
 const leoIcons = (window as any)['leoIcons'] as Set<string>
 
 // Maps Chromium icons to their equivalent Brave icons.
