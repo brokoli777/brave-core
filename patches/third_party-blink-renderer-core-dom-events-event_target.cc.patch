@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/events/event_target.cc b/third_party/blink/renderer/core/dom/events/event_target.cc
-index 262988693c9cf87ff7437b4075ff77ef66d21777..0face6d09bb2594efd0ec77151b2a09dbc1e058f 100644
+index 7d081b1a0c9ffe38793c5fe45ba3fd2b3c2fb961..e847a7f929feb7ff461b117ddb90f5b146403937 100644
 --- a/third_party/blink/renderer/core/dom/events/event_target.cc
 +++ b/third_party/blink/renderer/core/dom/events/event_target.cc
 @@ -646,6 +646,7 @@ bool EventTarget::AddEventListenerInternal(
@@ -10,7 +10,7 @@ index 262988693c9cf87ff7437b4075ff77ef66d21777..0face6d09bb2594efd0ec77151b2a09d
      if (options->hasSignal()) {
        // Instead of passing the entire |options| here, which could create a
        // circular reference due to |options| holding a Member<AbortSignal>, just
-@@ -829,6 +830,7 @@ bool EventTarget::RemoveEventListenerInternal(
+@@ -832,6 +833,7 @@ bool EventTarget::RemoveEventListenerInternal(
                                      &registered_listener)) {
      return false;
    }

@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 7a59c628db8ff711e5e06945ea5f21cf79ba65f2..31f40e61d45478c0e5db85b2a58a244546f1e2da 100644
+index 8498ce3a67efcb453889ac8c622771f0bf4b1535..d142fc9fbb91db326489b0d82f5df6b473cd748d 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -172,6 +172,7 @@ bool CanTrackLastVisit(ContentSettingsType type) {
+@@ -171,6 +171,7 @@ bool CanTrackLastVisit(ContentSettingsType type) {
    if (type == ContentSettingsType::PROTOCOL_HANDLERS) {
      return false;
    }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 0490225a03acfb8cb2f191de294b3baeb2c3deab..6e0b404a47863d1b7ace3ad7c9c5a0e83e490297 100644
+index 7148140440888700833ea768bec8ff455cd3747f..27ca507d9ef74ff1c9b2f032219cad82837cccf8 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -743,6 +743,7 @@ static_library("ui") {
+@@ -747,6 +747,7 @@ static_library("ui") {
  
      "//chrome/browser/task_manager:impl",
    ]
@@ -10,7 +10,7 @@ index 0490225a03acfb8cb2f191de294b3baeb2c3deab..6e0b404a47863d1b7ace3ad7c9c5a0e8
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3561,7 +3562,10 @@ static_library("ui") {
+@@ -3565,7 +3566,10 @@ static_library("ui") {
        ]
        deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
      } else {
@@ -22,7 +22,7 @@ index 0490225a03acfb8cb2f191de294b3baeb2c3deab..6e0b404a47863d1b7ace3ad7c9c5a0e8
      }
    }
  
-@@ -5692,6 +5696,7 @@ static_library("ui_public_dependencies") {
+@@ -5701,6 +5705,7 @@ static_library("ui_public_dependencies") {
      "//content/public/browser",
      "//mojo/public/cpp/bindings",
    ]
