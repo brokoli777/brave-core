@@ -16,6 +16,7 @@ import { AIChatContext, AIChatReactContext } from '../state/ai_chat_context'
 import { ConversationContext, ConversationReactContext } from '../state/conversation_context'
 import FeedbackForm from '../components/feedback_form'
 import FullPage from '../components/full_page'
+import Loading from '../components/loading'
 import Main from '../components/main'
 import './locale'
 import ACTIONS_LIST from './actions'
@@ -394,6 +395,7 @@ type CustomArgs = {
   model: string
   inputText: string
   hasConversation: boolean
+  hasConversationListItems: boolean
   hasSuggestedQuestions: boolean
   hasSiteInfo: boolean
   isStorageNoticeDismissed: boolean
@@ -415,6 +417,7 @@ const args: CustomArgs = {
   initialized: true,
   inputText: `Write a Star Trek poem about Data's life on board the Enterprise`,
   hasConversation: true,
+  hasConversationListItems: true,
   hasSuggestedQuestions: true,
   hasSiteInfo: true,
   isStorageNoticeDismissed: false,
@@ -483,7 +486,7 @@ const preview: Meta<CustomArgs> = {
         initialized: options.args.initialized,
         isDefaultConversation: options.args.isDefaultConversation,
         editingConversationId: null,
-        visibleConversations: CONVERSATIONS,
+        visibleConversations: options.args.hasConversationListItems ? CONVERSATIONS : [],
         hasAcceptedAgreement: options.args.hasAcceptedAgreement,
         isPremiumStatusFetching: false,
         isPremiumUser: options.args.isPremiumUser,
@@ -590,6 +593,19 @@ export const _FullPage = {
     return (
       <div className={styles.containerFull}>
         <FullPage />
+      </div>
+    )
+  }
+}
+
+export const _Loading = {
+  args: {
+    initialized: false
+  },
+  render: () => {
+    return (
+      <div className={styles.container}>
+        <Loading />
       </div>
     )
   }
