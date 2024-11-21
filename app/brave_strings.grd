@@ -583,15 +583,6 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
 
-      <!-- Crash Recovery Dialog -->
-      <message name="IDS_CRASH_RECOVERY_TITLE" desc="Title of dialog shown when the browser crashes." translateable="false">
-        Brave
-      </message>
-      <if expr="is_win">
-        <message name="IDS_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the browser has crashed.">
-          Whoa! Brave has crashed. Relaunch now?
-        </message>
-      </if>
       <!-- Password generation strings -->
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation.">
         Brave will save this password in your Brave sync chain. You won’t have to remember it.
@@ -1142,6 +1133,9 @@ Permissions you've already given to websites and apps may apply to this account.
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE" desc="Subtitle of the Brave Signin Bubble intercept that is shown when a signed out user signs in on the web with it's first account.">
           To get your passwords and more on all your devices, sign in to Brave
         </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
+          To stay safer online with your parent’s choices, sign in to Brave
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_IPH_TEXT_SIGNIN_REMINDER" desc="This string is the body text of a reminder message, which is intended to help users understand that they have been signed in to Brave. The user previously signed in to a Brave service (like Gmail or Maps), and saw the Brave Signin Bubble intercept; when asked whether the user wanted to sign in to Brave as well, the user selected yes. After a period of time, this reminder message appears at the top right of Brave (pointing at the Profile Menu) to remind the user that they made this choice a while ago. This body text string comes after the 'Welcome back, USER_NAME' string. We are focusing on the benefit that user enjoys, now that they're signed in to Brave. The tone should be welcoming.">
           While you're signed in, you can use your passwords and more from your Brave sync chain in Brave. You can change this at any time in settings.
         </message>
@@ -1633,11 +1627,6 @@ Permissions you've already given to websites and apps may apply to this account.
           Pinned! You can access Image Search again from the new button on the toolbar
         </message>
 
-        <!-- Search Bubble Strings -->
-        <message name="IDS_LENS_SEARCH_BUBBLE_DIALOG_TITLE" desc="The name of the lens search bubble dialog.">
-          Image Search Search Bubble
-        </message>
-
         <!-- Overlay WebUI Strings -->
         <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
           Copy
@@ -1759,25 +1748,6 @@ Permissions you've already given to websites and apps may apply to this account.
           New! You can translate both text and images on your screen by selecting the "translate screen" button
         </message>
 
-        <!-- Entrypoint Strings -->
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search anything on the page via Google Lens.">
-          Search anything on this page
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_1" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to search any image or text via Google Lens.">
-          Search any image or text with Lens
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_MESSAGE_2" desc="Text     that is shown in the CTRL+F dialog next to the Google Lens button. Informs the user to click     to select images or text to search with Google Lens.">
-          Select images/text to search with Lens
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL" desc="Label     for the Google Lens button in the CTRL+F dialog.">
-          Image Search
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_1" desc="Label     for the button in the CTRL+F dialog to open Google Lens.">
-          Open Image Search
-        </message>
-        <message name="IDS_LENS_OVERLAY_FIND_IN_PAGE_ENTRYPOINT_LABEL_2" desc="Label     for the button in the CTRL+F dialog inviting the user to try Google Lens.">
-          Try Image Search
-        </message>
         <message name="IDS_CONTENT_CONTEXT_LENS_OVERLAY" desc="The name of the Lens overlay command in the content area context menu">
           Search with Image Search
         </message>

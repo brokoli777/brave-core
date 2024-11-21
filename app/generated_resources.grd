@@ -273,24 +273,25 @@ are declared in tools/grit/grit_rule.gni.
     <file path="resources/generated_resources_zu.xtb" lang="zu" />
   </translations>
   <release seq="1">
+    <!-- IMPORTANT: .grdp files must be in the same directory as this file -->
     <messages fallback_to_english="true">
       <!-- Access Code Cast specific strings -->
       <part file="access_code_cast_strings.grdp" />
 
-      <!-- Bookmarks specific strings -->
-      <part file="bookmarks_strings.grdp" />
-
       <!-- App Management specific strings -->
       <part file="app_management_strings.grdp" />
 
-      <!-- Media Router specific strings -->
-      <part file="media_router_strings.grdp" />
+      <!-- Bookmarks specific strings -->
+      <part file="bookmarks_strings.grdp" />
 
       <!-- Global Media Controls specific strings -->
       <part file="gmc_strings.grdp" />
 
       <!-- Media live preview specific strings -->
       <part file="media_live_preview_strings.grdp" />
+
+      <!-- Media Router specific strings -->
+      <part file="media_router_strings.grdp" />
 
       <!-- Profiles specific strings -->
       <part file="profiles_strings.grdp" />
@@ -535,14 +536,14 @@ are declared in tools/grit/grit_rule.gni.
           </message>
         </if>
         <message name="IDS_FOCUS_HELP_BUBBLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader users when a general help bubble is shown.">
-          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this bubble.
+          Press <ph name="ACCELERATOR">$1<ex>F6</ex></ph> to focus this bubble.
         </message>
         <message name="IDS_FOCUS_HELP_BUBBLE_TOGGLE_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader when a help bubble pointing to a specific element is shown.">
-          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus this bubble, then again to focus the element it is pointing to.
+          Press <ph name="ACCELERATOR">$1<ex>F6</ex></ph> to focus this bubble, then again to focus the element it is pointing to.
         </message>
         <message name="IDS_FOCUS_HELP_BUBBLE_TUTORIAL_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Message announced to screen reader when a help bubble that can start a tutorial is shown.">
           A series of tutorial bubbles with instructions will be displayed.
-          Press |<ph name="ACCELERATOR">$1<ex>F6</ex></ph>| to focus a bubble, then again to focus the element it is pointing to.
+          Press <ph name="ACCELERATOR">$1<ex>F6</ex></ph> to focus a bubble, then again to focus the element it is pointing to.
         </message>
       </if>
 
@@ -876,12 +877,6 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_PREDICTION_IMPROVEMENTS" desc="The name of the Autofill context menu entry that will initiate filling using improved predictions." translateable="false">
             Autocomplete
           </message>
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_ADDRESS" desc="The name of the Autofill manual fallback for showing address suggestions in the content area context menu.">
-            Addresses and more
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
-            Payment methods
-          </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORD_AND_PASSKEYS" desc="This is a context menu entry. Upon clicking, it opens a submenu with more entries where the user can select a password or use a passkey from another device.">
             Passwords and passkeys
           </message>
@@ -1212,12 +1207,6 @@ are declared in tools/grit/grit_rule.gni.
           <!-- TODO(359570730): remove non translateable flag  -->
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_PREDICTION_IMPROVEMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu." translateable="false">
             Autocomplete
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_ADDRESS" desc="In Title Case: The name of the Autofill manual fallback for showing address suggestions in the content area context menu.">
-            Addresses and More
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PAYMENTS" desc="In Title Case: The name of the Autofill manual fallback for payment methods attribute command in the content area context menu.">
-            Payment Methods
           </message>
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORD_AND_PASSKEYS" desc="This is a context menu entry. Upon clicking, it opens a submenu with more entries where the user can select a password or use a passkey from another device.">
             Passwords and Passkeys
@@ -4509,307 +4498,305 @@ are declared in tools/grit/grit_rule.gni.
       </message>
 
       <!-- Task Manager Window -->
-      <if expr="not is_android">
-        <if expr="not use_titlecase">
-          <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button">
-            End process
-          </message>
-          <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column.">
-            Process ID
-          </message>
-          <message name="IDS_TASK_MANAGER_GDI_HANDLES_COLUMN" desc="The title for Task Manager GDI handles column.">
-            GDI handles
-          </message>
-          <message name="IDS_TASK_MANAGER_USER_HANDLES_COLUMN" desc="The title for Task Manager USER handles column.">
-            USER handles
-          </message>
-          <message name="IDS_TASK_MANAGER_TASK_COLUMN" desc="The text of the task column">
-            Task
-          </message>
-          <message name="IDS_TASK_MANAGER_NACL_DEBUG_STUB_PORT_COLUMN" desc="The text of the NativeClient debug stub port column">
-            NaCl debug port
-          </message>
-          <message name="IDS_TASK_MANAGER_NET_COLUMN" desc="The text of the network usage column">
-            Network
-          </message>
-          <message name="IDS_TASK_MANAGER_CPU_COLUMN" desc="The text of the CPU usage column">
-            CPU
-          </message>
-          <message name="IDS_TASK_MANAGER_START_TIME_COLUMN" desc="The text of the process start time column">
-            Start Time
-          </message>
-          <message name="IDS_TASK_MANAGER_CPU_TIME_COLUMN" desc="The text of the CPU time usage column">
-            CPU Time
-          </message>
-          <message name="IDS_TASK_MANAGER_MEM_FOOTPRINT_COLUMN" desc="Task manager process memory footprint column. This is the amount of memory used by the process.">
-            Memory footprint
-          </message>
-          <message name="IDS_TASK_MANAGER_SWAPPED_MEM_COLUMN" desc="Task manager process swapped memory column. Shows the size of the memory that lives in the swap space.">
-            Swapped memory
-          </message>
-          <message name="IDS_TASK_MANAGER_PROFILE_NAME_COLUMN" desc="The name of the column with the name of the profile in which the page is running, if any.">
-            Profile
-          </message>
-          <message name="IDS_TASK_MANAGER_IDLE_WAKEUPS_COLUMN" desc="Task manager idle processor wakeups column">
-            Idle wake ups
-          </message>
-          <message name="IDS_TASK_MANAGER_HARD_FAULTS_COLUMN" desc="Task manager hard fault count column">
-            Hard faults
-          </message>
-          <message name="IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN" desc="Task manager open fds (file descriptors) count column">
-            File descriptors
-          </message>
-          <message name="IDS_TASK_MANAGER_PROCESS_PRIORITY_COLUMN" desc="Task manager process priority column">
-            Process priority
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_IMAGE_CACHE_COLUMN" desc="Task manager WebCore image cache size column.">
-            Image cache
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_SCRIPTS_CACHE_COLUMN" desc="Task manager WebCore scripts cache size column.">
-            Script cache
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_CSS_CACHE_COLUMN" desc="Task manager WebCore CSS cache size column.">
-            CSS cache
-          </message>
-          <message name="IDS_TASK_MANAGER_VIDEO_MEMORY_COLUMN" desc="The text of the video memory usage column">
-            GPU memory
-          </message>
-          <message name="IDS_TASK_MANAGER_SQLITE_MEMORY_USED_COLUMN" desc="Amount of memory used by SQLite.">
-            SQLite memory
-          </message>
-          <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
-            JavaScript memory
-          </message>
-          <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
-            Keepalive count
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button">
-            End Process
-          </message>
-          <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column.">
-            Process ID
-          </message>
-          <message name="IDS_TASK_MANAGER_GDI_HANDLES_COLUMN" desc="The title for Task Manager GDI handles column.">
-            GDI Handles
-          </message>
-          <message name="IDS_TASK_MANAGER_USER_HANDLES_COLUMN" desc="The title for Task Manager USER handles column.">
-            USER Handles
-          </message>
-          <message name="IDS_TASK_MANAGER_NACL_DEBUG_STUB_PORT_COLUMN" desc="The text of the NativeClient debug stub port column">
-            NaCl Debug Port
-          </message>
-          <message name="IDS_TASK_MANAGER_TASK_COLUMN" desc="The text of the task column">
-            Task
-          </message>
-          <message name="IDS_TASK_MANAGER_NET_COLUMN" desc="The text of the network usage column">
-            Network
-          </message>
-          <message name="IDS_TASK_MANAGER_CPU_COLUMN" desc="The text of the CPU usage column">
-            CPU
-          </message>
-          <message name="IDS_TASK_MANAGER_START_TIME_COLUMN" desc="The text of the process start time column">
-            Start Time
-          </message>
-          <message name="IDS_TASK_MANAGER_CPU_TIME_COLUMN" desc="The text of the CPU time column. This is the time that this process actually occupies the CPU.">
-            CPU Time
-          </message>
-          <message name="IDS_TASK_MANAGER_MEM_FOOTPRINT_COLUMN" desc="Task manager process memory footprint column. This is the amount of memory used by the process.">
-            Memory Footprint
-          </message>
-          <message name="IDS_TASK_MANAGER_SWAPPED_MEM_COLUMN" desc="Task manager process swapped memory column. Shows the size of the memory that lives in the swap space.">
-            Swapped Memory
-          </message>
-          <message name="IDS_TASK_MANAGER_PROFILE_NAME_COLUMN" desc="The name of the column with the name of the profile in which the page is running, if any.">
-            Profile
-          </message>
-          <message name="IDS_TASK_MANAGER_IDLE_WAKEUPS_COLUMN" desc="Task manager idle processor wakeups column">
-            Idle Wake Ups
-          </message>
-          <message name="IDS_TASK_MANAGER_HARD_FAULTS_COLUMN" desc="Task manager hard fault count column">
-            Hard Faults
-          </message>
-          <message name="IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN" desc="Task manager open fds (file descriptors) count column">
-            File Descriptors
-          </message>
-          <message name="IDS_TASK_MANAGER_PROCESS_PRIORITY_COLUMN" desc="Task manager process priority column">
-            Process Priority
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_IMAGE_CACHE_COLUMN" desc="Task manager WebCore image cache size column.">
-            Image Cache
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_SCRIPTS_CACHE_COLUMN" desc="Task manager WebCore scripts cache size column.">
-            Script Cache
-          </message>
-          <message name="IDS_TASK_MANAGER_WEBCORE_CSS_CACHE_COLUMN" desc="Task manager WebCore CSS cache size column.">
-            CSS Cache
-          </message>
-          <message name="IDS_TASK_MANAGER_VIDEO_MEMORY_COLUMN" desc="The text of the video memory usage column">
-            GPU Memory
-          </message>
-          <message name="IDS_TASK_MANAGER_SQLITE_MEMORY_USED_COLUMN" desc="Amount of memory used by SQLite.">
-            SQLite Memory
-          </message>
-          <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
-            JavaScript Memory
-          </message>
-          <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
-            Keepalive Count
-          </message>
-        </if>
-        <message name="IDS_TASK_MANAGER_MEM_CELL_TEXT" desc="The value displayed in the memory usage cells.">
-          <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K
+      <if expr="not use_titlecase">
+        <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button">
+          End process
         </message>
-        <message name="IDS_TASK_MANAGER_CACHE_SIZE_CELL_TEXT" desc="The value displayed in the cache size cells.">
-          <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K (<ph name="NUM_KILOBYTES_LIVE">$2<ex>5,000</ex></ph>K live)
+        <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column.">
+          Process ID
         </message>
-        <message name="IDS_TASK_MANAGER_NA_CELL_TEXT" desc="The value displayed for resource usage when the information is not available, or not applicable to the process.">
-          –
+        <message name="IDS_TASK_MANAGER_GDI_HANDLES_COLUMN" desc="The title for Task Manager GDI handles column.">
+          GDI handles
         </message>
-        <message name="IDS_TASK_MANAGER_BACKGROUNDED_TEXT" desc="The value displayed for a process with backgrounded priority">
-          Low
+        <message name="IDS_TASK_MANAGER_USER_HANDLES_COLUMN" desc="The title for Task Manager USER handles column.">
+          USER handles
         </message>
-        <message name="IDS_TASK_MANAGER_FOREGROUNDED_TEXT" desc="The value displayed for a process with foregrounded priority">
-          Normal
+        <message name="IDS_TASK_MANAGER_TASK_COLUMN" desc="The text of the task column">
+          Task
         </message>
-        <message name="IDS_TASK_MANAGER_UNKNOWN_VALUE_TEXT" desc="The value displayed for an unknown NaCl debug stub port in the task manager.">
-          Unknown
+        <message name="IDS_TASK_MANAGER_NACL_DEBUG_STUB_PORT_COLUMN" desc="The text of the NativeClient debug stub port column">
+          NaCl debug port
         </message>
-        <message name="IDS_TASK_MANAGER_DISABLED_NACL_DBG_TEXT" desc="The value displayed for NaCl debug stub port in the task manager when the flag #enable-nacl-debug is disabled.">
-          Disabled
+        <message name="IDS_TASK_MANAGER_NET_COLUMN" desc="The text of the network usage column">
+          Network
         </message>
-        <message name="IDS_TASK_MANAGER_HANDLES_CELL_TEXT" desc="The value displayed in the user/gdi cells.">
-          <ph name="NUM_HANDLES">$1<ex>300</ex></ph> (<ph name="NUM_KILOBYTES_LIVE">$2<ex>500</ex></ph> peak)
+        <message name="IDS_TASK_MANAGER_CPU_COLUMN" desc="The text of the CPU usage column">
+          CPU
         </message>
-        <message name="IDS_TASK_MANAGER_WEB_BROWSER_CELL_TEXT" desc="The text of the web browser process row">
-          Browser
+        <message name="IDS_TASK_MANAGER_START_TIME_COLUMN" desc="The text of the process start time column">
+          Start Time
         </message>
-        <message name="IDS_TASK_MANAGER_EXTENSION_PREFIX" desc="The prefix for a Task Manager extension row (always visible if the extension has a view)">
-          Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+        <message name="IDS_TASK_MANAGER_CPU_TIME_COLUMN" desc="The text of the CPU time usage column">
+          CPU Time
         </message>
-        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private extension row (may not be visible if Private is not open)">
-          Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+        <message name="IDS_TASK_MANAGER_MEM_FOOTPRINT_COLUMN" desc="Task manager process memory footprint column. This is the amount of memory used by the process.">
+          Memory footprint
         </message>
-        <message name="IDS_TASK_MANAGER_APP_PREFIX" desc="The prefix for a Task Manager app row (always visible if the app has a view)">
-          App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+        <message name="IDS_TASK_MANAGER_SWAPPED_MEM_COLUMN" desc="Task manager process swapped memory column. Shows the size of the memory that lives in the swap space.">
+          Swapped memory
         </message>
-        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private app row (may not be visible if the app is not open in Private)">
-          Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+        <message name="IDS_TASK_MANAGER_PROFILE_NAME_COLUMN" desc="The name of the column with the name of the profile in which the page is running, if any.">
+          Profile
         </message>
-        <message name="IDS_TASK_MANAGER_TAB_PREFIX" desc="The prefix for a Task Manager Tab row">
-          Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+        <message name="IDS_TASK_MANAGER_IDLE_WAKEUPS_COLUMN" desc="Task manager idle processor wakeups column">
+          Idle wake ups
         </message>
-        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
-          Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+        <message name="IDS_TASK_MANAGER_HARD_FAULTS_COLUMN" desc="Task manager hard fault count column">
+          Hard faults
         </message>
-        <message name="IDS_TASK_MANAGER_BACKGROUND_APP_PREFIX" desc="The prefix for a Task Manager background app task representing a BackgroundContents">
-          Background App: <ph name="BACKGROUND_APP_URL">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN" desc="Task manager open fds (file descriptors) count column">
+          File descriptors
         </message>
-        <message name="IDS_TASK_MANAGER_BACKGROUND_PREFIX" desc="The prefix for a Task Manager background page row">
-          Background Page: <ph name="BACKGROUND_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_PROCESS_PRIORITY_COLUMN" desc="Task manager process priority column">
+          Process priority
         </message>
-        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_PREFIX" desc="The prefix for a page stored in the Back/Forward Cache">
-          Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_WEBCORE_IMAGE_CACHE_COLUMN" desc="Task manager WebCore image cache size column.">
+          Image cache
         </message>
-        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
-          Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_WEBCORE_SCRIPTS_CACHE_COLUMN" desc="Task manager WebCore scripts cache size column.">
+          Script cache
         </message>
-        <message name="IDS_TASK_MANAGER_PLUGIN_PREFIX" desc="The prefix for a Task Manager plugin row">
-          Plugin: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
+        <message name="IDS_TASK_MANAGER_WEBCORE_CSS_CACHE_COLUMN" desc="Task manager WebCore CSS cache size column.">
+          CSS cache
         </message>
-        <message name="IDS_TASK_MANAGER_PLUGIN_BROKER_PREFIX" desc="Task Manager row for PPAPI plugin broker, which provides additional access for PPAPI plugins">
-          Plugin Broker: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
+        <message name="IDS_TASK_MANAGER_VIDEO_MEMORY_COLUMN" desc="The text of the video memory usage column">
+          GPU memory
         </message>
-        <message name="IDS_TASK_MANAGER_PRELOADED_RENDERER_FOR_UI" desc="Task Manager row for the render process that is preloaded with Top Brave WebUI resources.">
-          Preloaded UI Renderer
+        <message name="IDS_TASK_MANAGER_SQLITE_MEMORY_USED_COLUMN" desc="Amount of memory used by SQLite.">
+          SQLite memory
         </message>
-        <!-- TODO(liuwilliam): crbug/1325318 renaming the rest of existing Prerender to NoStatePrefetch -->
-        <message name="IDS_TASK_MANAGER_NO_STATE_PREFETCH_PREFIX" desc="The prefix for a Task Manager No State Prefetch row">
-          Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
+        <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
+          JavaScript memory
         </message>
-        <message name="IDS_TASK_MANAGER_PRERENDER_PREFIX" desc="The prefix for a Task Manager Prerender2 row">
-          Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_SPARE_RENDERER_PREFIX" desc="Task Manager row for a 'spare' render process. That is a render process that was started in anticipation of it being needed so that when it is needed it is immediately ready for use">
-          Spare Renderer
-        </message>
-        <message name="IDS_TASK_MANAGER_UNKNOWN_RENDERER_PREFIX" desc="Task Manager row for an 'unknown' render process. That is a render process that the Task Manager knows is running, but that the Task Manager doesn't have any other information about, so that it is unable to present it to the user classified more precisely">
-          Renderer
-        </message>
-        <message name="IDS_TASK_MANAGER_DEDICATED_WORKER_PREFIX" desc="The prefix for a Task Manager dedicated worker row">
-          Dedicated Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/dedicated-worker/basic/dedicated-worker.js</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_SHARED_WORKER_PREFIX" desc="The prefix for a Task Manager shared worker row">
-          Shared Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/shared-worker/basic/shared-worker.js</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_SERVICE_WORKER_PREFIX" desc="The prefix for a Task Manager service worker row">
-          Service Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/service-worker/basic/service-worker.js</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_UNKNOWN_PLUGIN_NAME" desc="The prefix for a Task Manager plugin row">
-          Unknown plugin
-        </message>
-        <message name="IDS_TASK_MANAGER_UTILITY_PREFIX" desc="The prefix for a utility process row">
-          Utility: <ph name="UTILITY_TYPE">$1<ex>Image Decoder</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_NACL_PREFIX" desc="The prefix for a Task Manager Native Client module row">
-          Native Client module: <ph name="NEXE_NAME">$1<ex>Unknown Native Client module</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_NACL_BROKER_PREFIX" desc="Task Manager row for Native Client broker, which acts as the sanbox manager for NaCl processes">
-          Native Client security manager
-        </message>
-        <message name="IDS_TASK_MANAGER_GPU_PREFIX" desc="Task Manager row for the GPU process, which is the process doing all accelerated graphics rendering">
-          GPU Process
-        </message>
-        <message name="IDS_TASK_MANAGER_PRINT_PREFIX" desc="The prefix for a print preview process row in the Task Manager">
-          Print: <ph name="PRINT_NAME">$1<ex>Brave Maps</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row in the Task Manager (these processes are created when site isolation is enabled)">
-          Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
-          Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row stored in the Back/Forward Cache">
-          Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
-          Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
-          Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
-          Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_FENCED_FRAME_PREFIX" desc="The prefix for a fenced frame row in the Task Manager">
-          Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
-          Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
-          App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
-          Tool: <ph name="PRINT_NAME">$1<ex>Manage Profiles</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_ARC_PREFIX_BACKGROUND_SERVICE" desc="The prefix for an ARC service process row">
-          Service: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_ARC_PREFIX_RECEIVER" desc="The prefix for an ARC receiver process row">
-          Receiver: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_ARC_SYSTEM" desc="The prefix for an ARC system processes row">
-          System: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_LINUX_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
-          Linux Virtual Machine: <ph name="LINUX_VM_NAME">$1<ex>termina</ex></ph>
-        </message>
-        <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="A row in the task manager for a Parallels Desktop Virtual Machine. Parallels Desktop is a 3rd-party product name that should remain in English.">
-          Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
+        <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
+          Keepalive count
         </message>
       </if>
+      <if expr="use_titlecase">
+        <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button">
+          End Process
+        </message>
+        <message name="IDS_TASK_MANAGER_PROCESS_ID_COLUMN" desc="The title for Task Manager process ID column.">
+          Process ID
+        </message>
+        <message name="IDS_TASK_MANAGER_GDI_HANDLES_COLUMN" desc="The title for Task Manager GDI handles column.">
+          GDI Handles
+        </message>
+        <message name="IDS_TASK_MANAGER_USER_HANDLES_COLUMN" desc="The title for Task Manager USER handles column.">
+          USER Handles
+        </message>
+        <message name="IDS_TASK_MANAGER_NACL_DEBUG_STUB_PORT_COLUMN" desc="The text of the NativeClient debug stub port column">
+          NaCl Debug Port
+        </message>
+        <message name="IDS_TASK_MANAGER_TASK_COLUMN" desc="The text of the task column">
+          Task
+        </message>
+        <message name="IDS_TASK_MANAGER_NET_COLUMN" desc="The text of the network usage column">
+          Network
+        </message>
+        <message name="IDS_TASK_MANAGER_CPU_COLUMN" desc="The text of the CPU usage column">
+          CPU
+        </message>
+        <message name="IDS_TASK_MANAGER_START_TIME_COLUMN" desc="The text of the process start time column">
+          Start Time
+        </message>
+        <message name="IDS_TASK_MANAGER_CPU_TIME_COLUMN" desc="The text of the CPU time column. This is the time that this process actually occupies the CPU.">
+          CPU Time
+        </message>
+        <message name="IDS_TASK_MANAGER_MEM_FOOTPRINT_COLUMN" desc="Task manager process memory footprint column. This is the amount of memory used by the process.">
+          Memory Footprint
+        </message>
+        <message name="IDS_TASK_MANAGER_SWAPPED_MEM_COLUMN" desc="Task manager process swapped memory column. Shows the size of the memory that lives in the swap space.">
+          Swapped Memory
+        </message>
+        <message name="IDS_TASK_MANAGER_PROFILE_NAME_COLUMN" desc="The name of the column with the name of the profile in which the page is running, if any.">
+          Profile
+        </message>
+        <message name="IDS_TASK_MANAGER_IDLE_WAKEUPS_COLUMN" desc="Task manager idle processor wakeups column">
+          Idle Wake Ups
+        </message>
+        <message name="IDS_TASK_MANAGER_HARD_FAULTS_COLUMN" desc="Task manager hard fault count column">
+          Hard Faults
+        </message>
+        <message name="IDS_TASK_MANAGER_OPEN_FD_COUNT_COLUMN" desc="Task manager open fds (file descriptors) count column">
+          File Descriptors
+        </message>
+        <message name="IDS_TASK_MANAGER_PROCESS_PRIORITY_COLUMN" desc="Task manager process priority column">
+          Process Priority
+        </message>
+        <message name="IDS_TASK_MANAGER_WEBCORE_IMAGE_CACHE_COLUMN" desc="Task manager WebCore image cache size column.">
+          Image Cache
+        </message>
+        <message name="IDS_TASK_MANAGER_WEBCORE_SCRIPTS_CACHE_COLUMN" desc="Task manager WebCore scripts cache size column.">
+          Script Cache
+        </message>
+        <message name="IDS_TASK_MANAGER_WEBCORE_CSS_CACHE_COLUMN" desc="Task manager WebCore CSS cache size column.">
+          CSS Cache
+        </message>
+        <message name="IDS_TASK_MANAGER_VIDEO_MEMORY_COLUMN" desc="The text of the video memory usage column">
+          GPU Memory
+        </message>
+        <message name="IDS_TASK_MANAGER_SQLITE_MEMORY_USED_COLUMN" desc="Amount of memory used by SQLite.">
+          SQLite Memory
+        </message>
+        <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
+          JavaScript Memory
+        </message>
+        <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
+          Keepalive Count
+        </message>
+      </if>
+      <message name="IDS_TASK_MANAGER_MEM_CELL_TEXT" desc="The value displayed in the memory usage cells.">
+        <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K
+      </message>
+      <message name="IDS_TASK_MANAGER_CACHE_SIZE_CELL_TEXT" desc="The value displayed in the cache size cells.">
+        <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K (<ph name="NUM_KILOBYTES_LIVE">$2<ex>5,000</ex></ph>K live)
+      </message>
+      <message name="IDS_TASK_MANAGER_NA_CELL_TEXT" desc="The value displayed for resource usage when the information is not available, or not applicable to the process.">
+        –
+      </message>
+      <message name="IDS_TASK_MANAGER_BACKGROUNDED_TEXT" desc="The value displayed for a process with backgrounded priority">
+        Low
+      </message>
+      <message name="IDS_TASK_MANAGER_FOREGROUNDED_TEXT" desc="The value displayed for a process with foregrounded priority">
+        Normal
+      </message>
+      <message name="IDS_TASK_MANAGER_UNKNOWN_VALUE_TEXT" desc="The value displayed for an unknown NaCl debug stub port in the task manager.">
+        Unknown
+      </message>
+      <message name="IDS_TASK_MANAGER_DISABLED_NACL_DBG_TEXT" desc="The value displayed for NaCl debug stub port in the task manager when the flag #enable-nacl-debug is disabled.">
+        Disabled
+      </message>
+      <message name="IDS_TASK_MANAGER_HANDLES_CELL_TEXT" desc="The value displayed in the user/gdi cells.">
+        <ph name="NUM_HANDLES">$1<ex>300</ex></ph> (<ph name="NUM_KILOBYTES_LIVE">$2<ex>500</ex></ph> peak)
+      </message>
+      <message name="IDS_TASK_MANAGER_WEB_BROWSER_CELL_TEXT" desc="The text of the web browser process row">
+        Browser
+      </message>
+      <message name="IDS_TASK_MANAGER_EXTENSION_PREFIX" desc="The prefix for a Task Manager extension row (always visible if the extension has a view)">
+        Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private extension row (may not be visible if Private is not open)">
+        Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_APP_PREFIX" desc="The prefix for a Task Manager app row (always visible if the app has a view)">
+        App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private app row (may not be visible if the app is not open in Private)">
+        Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_TAB_PREFIX" desc="The prefix for a Task Manager Tab row">
+        Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager Private Tab row (may not be visible if Private is not open)">
+        Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACKGROUND_APP_PREFIX" desc="The prefix for a Task Manager background app task representing a BackgroundContents">
+        Background App: <ph name="BACKGROUND_APP_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACKGROUND_PREFIX" desc="The prefix for a Task Manager background page row">
+        Background Page: <ph name="BACKGROUND_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_PREFIX" desc="The prefix for a page stored in the Back/Forward Cache">
+        Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_PREFIX" desc="The prefix for a Private page stored in the Back/Forward Cache">
+        Private Back/Forward Cached Page: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PLUGIN_PREFIX" desc="The prefix for a Task Manager plugin row">
+        Plugin: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PLUGIN_BROKER_PREFIX" desc="Task Manager row for PPAPI plugin broker, which provides additional access for PPAPI plugins">
+        Plugin Broker: <ph name="PLUGIN_NAME">$1<ex>Unknown Plugin</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PRELOADED_RENDERER_FOR_UI" desc="Task Manager row for the render process that is preloaded with Top Brave WebUI resources.">
+        Preloaded UI Renderer
+      </message>
+      <!-- TODO(liuwilliam): crbug/1325318 renaming the rest of existing Prerender to NoStatePrefetch -->
+      <message name="IDS_TASK_MANAGER_NO_STATE_PREFETCH_PREFIX" desc="The prefix for a Task Manager No State Prefetch row">
+        Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PRERENDER_PREFIX" desc="The prefix for a Task Manager Prerender2 row">
+        Prerender: <ph name="PRERENDER_CONTENTS_NAME">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_SPARE_RENDERER_PREFIX" desc="Task Manager row for a 'spare' render process. That is a render process that was started in anticipation of it being needed so that when it is needed it is immediately ready for use">
+        Spare Renderer
+      </message>
+      <message name="IDS_TASK_MANAGER_UNKNOWN_RENDERER_PREFIX" desc="Task Manager row for an 'unknown' render process. That is a render process that the Task Manager knows is running, but that the Task Manager doesn't have any other information about, so that it is unable to present it to the user classified more precisely">
+        Renderer
+      </message>
+      <message name="IDS_TASK_MANAGER_DEDICATED_WORKER_PREFIX" desc="The prefix for a Task Manager dedicated worker row">
+        Dedicated Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/dedicated-worker/basic/dedicated-worker.js</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_SHARED_WORKER_PREFIX" desc="The prefix for a Task Manager shared worker row">
+        Shared Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/shared-worker/basic/shared-worker.js</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_SERVICE_WORKER_PREFIX" desc="The prefix for a Task Manager service worker row">
+        Service Worker: <ph name="SCRIPT_URL">$1<ex>https://googlechrome.github.io/samples/service-worker/basic/service-worker.js</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_UNKNOWN_PLUGIN_NAME" desc="The prefix for a Task Manager plugin row">
+        Unknown plugin
+      </message>
+      <message name="IDS_TASK_MANAGER_UTILITY_PREFIX" desc="The prefix for a utility process row">
+        Utility: <ph name="UTILITY_TYPE">$1<ex>Image Decoder</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_NACL_PREFIX" desc="The prefix for a Task Manager Native Client module row">
+        Native Client module: <ph name="NEXE_NAME">$1<ex>Unknown Native Client module</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_NACL_BROKER_PREFIX" desc="Task Manager row for Native Client broker, which acts as the sanbox manager for NaCl processes">
+        Native Client security manager
+      </message>
+      <message name="IDS_TASK_MANAGER_GPU_PREFIX" desc="Task Manager row for the GPU process, which is the process doing all accelerated graphics rendering">
+        GPU Process
+      </message>
+      <message name="IDS_TASK_MANAGER_PRINT_PREFIX" desc="The prefix for a print preview process row in the Task Manager">
+        Print: <ph name="PRINT_NAME">$1<ex>Brave Maps</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row in the Task Manager (these processes are created when site isolation is enabled)">
+        Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in Private mode)">
+        Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_SUBFRAME_PREFIX" desc="The prefix for a out-of-process-iframe row stored in the Back/Forward Cache">
+        Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_BACK_FORWARD_CACHE_INCOGNITO_SUBFRAME_PREFIX" desc="The prefix for a Private out-of-process-iframe row stored in the Back/Forward Cache">
+        Private Back/Forward Cached Subframe: <ph name="BACK_FORWARD_CACHE_INCOGNITO_PAGE_URL">$1<ex>http://www.google.com</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
+        Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
+        Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_FENCED_FRAME_PREFIX" desc="The prefix for a fenced frame row in the Task Manager">
+        Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
+        Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
+        App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
+        Tool: <ph name="PRINT_NAME">$1<ex>Manage Profiles</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_ARC_PREFIX_BACKGROUND_SERVICE" desc="The prefix for an ARC service process row">
+        Service: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_ARC_PREFIX_RECEIVER" desc="The prefix for an ARC receiver process row">
+        Receiver: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_ARC_SYSTEM" desc="The prefix for an ARC system processes row">
+        System: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_LINUX_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
+        Linux Virtual Machine: <ph name="LINUX_VM_NAME">$1<ex>termina</ex></ph>
+      </message>
+      <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="A row in the task manager for a Parallels Desktop Virtual Machine. Parallels Desktop is a 3rd-party product name that should remain in English.">
+        Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
+      </message>
 
       <if expr="chromeos_ash">
         <message name="IDS_UTILITY_PROCESS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
@@ -8452,6 +8439,27 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_MOST_RELEVANT_TAB_RESUMPTION_SEE_MORE" desc="A label for the see more button in the most relevant tab resumption module.">
         See more
       </message>
+      <message name="IDS_NTP_MODULES_MICROSOFT_AUTHENTICATION_NAME" desc="Name of the Microsoft Authentication module as shown in various UIs.">
+        Microsoft Authentication
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_DISABLE_BUTTON_TEXT" desc="Text shown on the disable button of the Microsoft Authentication module.">
+       Don't show this card
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_DISMISS_BUTTON_TEXT" desc="Text shown on the disable button of the Microsoft Authentication module.">
+       Hide for 12 hours
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_HEADING" desc="First line of text shown in the Microsoft Authentication module.">
+       See your Outlook Calendar and Sharepoint files
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_SUBHEADING" desc="Second line of text shown in the Microsoft Authentication module.">
+       Easily access recent documents and upcoming calendar events
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_SIGN_IN_BUTTON_TEXT" desc="Text shown on the Microsoft Authentication module's sign in button.">
+       Sign in with Microsoft
+      </message>
+      <message name="IDS_NTP_MICROSOFT_AUTHENTICATION_SIDE_PANEL_DESCRIPTION" desc="Text in the side panel describing the Microsoft Authentication module.">
+       If this card is disabled, your Microsoft cards such as Sharepoint and Outlook Calendar will be disabled as well.
+      </message>
 
       <!-- Mobile NTP Middle Slot Promo -->
       <message name="IDS_NTP_MOBILE_PROMO_HEADER" desc="Header for a promo that shows on the Desktop NTP prompting user to scan a QR code with their mobile device">
@@ -9364,6 +9372,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_TAB_DECLUTTER" desc="The accessible name for the Tab Declutter button." is_accessibility_with_no_ui="true">
         Review inactive tabs
       </message>
+      <message name="IDS_TOOLTIP_TAB_DECLUTTER_WITH_DEDUPE" desc="The tooltip for the Tab Declutter button.">
+        Clean up unused tabs?
+      </message>
+      <message name="IDS_TAB_DECLUTTER_WITH_DEDUPE" desc="The text label of the Tab Declutter button.">
+        Clean up unused tabs?
+      </message>
+      <message name="IDS_ACCNAME_TAB_DECLUTTER_WITH_DEDUPE" desc="The accessible name for the Tab Declutter button." is_accessibility_with_no_ui="true">
+        Clean up unused tabs
+      </message>
       <message name="IDS_DECLUTTER_TIMESTAMP" desc="The description of when a tab was last accessed, for use in a declutter row.">
         {NUM_DAYS, plural,
           =0 {Visited 0 days ago}
@@ -9386,10 +9403,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Close all
       </message>
       <message name="IDS_DECLUTTER_CLOSE_TAB_ARIA_LABEL" desc="The accessible label declutter for the button which excludes a tab from the list" is_accessibility_with_no_ui="true">
-        Remove <ph name="TAB_TITLE">$1<ex>New Tab</ex></ph> from list
+        Remove <ph name="TAB_TITLE">$1<ex>New Tab</ex></ph>, <ph name="LAST_ACTIVE">$2<ex>Visited 9 days ago</ex></ph> from list
       </message>
       <message name="IDS_DECLUTTER_CLOSE_TAB_TOOLTIP" desc="The declutter tooltip for the button which excludes a tab from the list">
         Remove tab from list
+      </message>
+      <message name="IDS_DECLUTTER_A11Y_TAB_EXCLUDED" desc="A11y message after user clicks on the close tab button in the declutter list item." is_accessibility_with_no_ui="true">
+        Tab excluded from list
       </message>
       <!-- Strings for tab organization -->
       <message name="IDS_TOOLTIP_TAB_ORGANIZE" desc="The tooltip for the Tab Organization button.">
@@ -9406,12 +9426,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <if expr="use_titlecase">
         <message name="IDS_TAB_ORGANIZE_MENU" desc="In Title Case: The text label for the tab organization app menu item.">
-          Organize Tabs
+          Group Tabs With AI
         </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_TAB_ORGANIZE_MENU" desc="The text label for the tab organization app menu item.">
-          Organize tabs
+          Group tabs with AI
         </message>
       </if>
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_IPH" desc="The body text of the IPH describing how to interact with a tab group resulting from tab organization.">
@@ -9419,6 +9439,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_ORGANIZATION_SUCCESS_IPH_SCREENREADER" desc="The screen reader text of the IPH describing how to interact with a tab group resulting from tab organization." is_accessibility_with_no_ui="true">
         Select the tab group and activate the context menu to edit
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_SELECTOR_ARIA_LABEL" desc="The screen reader text describing the tab organization selector button" is_accessibility_with_no_ui="true">
+        <ph name="HEADING">$1<ex>Group tabs with AI</ex></ph>. <ph name="SUBHEADING">$2<ex>Get your tabs sorted</ex></ph>
       </message>
 
       <!-- Strings for experimental AI promo -->
@@ -10762,6 +10785,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_PICTURE_IN_PICTURE_MINIMIZE_CONTROL_TEXT" desc="Text label of the minimize control button. The button appears when the user hovers over the Picture-in-Picture window.">
         Minimize
       </message>
+      <message name="IDS_PICTURE_IN_PICTURE_REPLAY_10_TEXT" desc="Text label of the replay 10 seconds button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Replay 10 seconds
+      </message>
+      <message name="IDS_PICTURE_IN_PICTURE_FORWARD_10_TEXT" desc="Text label of the forward 10 seconds button. The button appears when the user hovers over the Picture-in-Picture window.">
+        Forward 10 seconds
+      </message>
       <message name="IDS_PICTURE_IN_PICTURE_RESIZE_HANDLE_TEXT" desc="Text label of the resize handle. The button appears when the user hovers over the Picture-in-Picture window.">
         Resize
       </message>
@@ -11254,6 +11283,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_ORGANIZATION_BACK_BUTTON_ARIA_LABEL" desc="Accessibility label for the back button within a tab organization subpage." is_accessibility_with_no_ui="true">
         Click to navigate away from <ph name="TITLE">$1<ex>Auto Tab Groups</ex></ph>
+      </message>
+      <message name="IDS_TAB_ORGANIZATION_A11Y_TAB_EXCLUDED" desc="A11y message after user clicks on the close tab button in the tab organization list item." is_accessibility_with_no_ui="true">
+        Tab excluded from suggested group
       </message>
 
       <!-- Strings for Window Titles in Menus -->
@@ -13438,9 +13470,6 @@ This can include information about installed software, files, your browser, and 
           </else>
         </if>
 
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNIN_SUBTITLE_SUPERVISED" desc="This string is the body of a promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in: Kids of a certain age are motivated to get their parents’ help staying safer online, so the tone should be motivating. We want users to understand why signing in is beneficial, and click 'Continue as name' to sign in to their Brave sync chain.">
-          To stay safer online with your parent’s choices, sign in as <ph name="USER_EMAIL">$1<ex>john@google.com</ex></ph>
-        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
           No thanks
         </message>
@@ -18193,6 +18222,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_SELECT_AUDIO_OUTPUT_DIALOG_CHOOSE_DEVICE" desc="Text displayed above the list of audio output devices in the selection dialog.">
       Choose an audio output device
+    </message>
+
+    <!-- Internal debug pages disabled interstitial. -->
+    <message name="IDS_INTERNAL_DEBUG_PAGES_DISABLED_HEADING" desc="This is the heading for the page that appears when a user attempts to load an internal developer debugging page when such pages are disabled by a pref.">
+      Internal debugging pages are currently disabled.
     </message>
   </messages>
 </release>
