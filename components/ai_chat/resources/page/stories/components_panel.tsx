@@ -497,6 +497,7 @@ const preview: Meta<CustomArgs> = {
         goPremium: () => {},
         managePremium: () => {},
         handleAgreeClick: () => {},
+        markStorageNoticeViewed: () => {},
         dismissStorageNotice: () => {},
         dismissPremiumPrompt: () => {},
         userRefreshPremiumSession: () => {},

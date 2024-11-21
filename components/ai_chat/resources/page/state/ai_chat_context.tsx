@@ -5,8 +5,6 @@
 
 import * as React from 'react'
 import getAPI, * as mojom from '../api'
-import { loadTimeData } from '$web-common/loadTimeData'
-
 
 interface Props {
   // Whether there is a specific conversation selected
@@ -17,22 +15,11 @@ interface Props {
   onSelectConversationUuid: (id: string | undefined) => unknown
 }
 
-export interface AIChatContext extends Props {
-  initialized: boolean
-  visibleConversations: mojom.Conversation[]
-  hasAcceptedAgreement: boolean
-  isPremiumStatusFetching: boolean
-  isPremiumUser: boolean
-  isPremiumUserDisconnected: boolean
-  isStorageNoticeDismissed: boolean
-  canShowPremiumPrompt?: boolean
-  isMobile: boolean
-  isStandalone?: boolean
-  isHistoryEnabled: boolean
-  allActions: mojom.ActionGroup[]
+export type AIChatContext = Props & mojom.UIState & {
   goPremium: () => void
   managePremium: () => void
   handleAgreeClick: () => void
+  markStorageNoticeViewed: () => void
   dismissStorageNotice: () => void
   dismissPremiumPrompt: () => void
   userRefreshPremiumSession: () => void
@@ -43,22 +30,12 @@ export interface AIChatContext extends Props {
 }
 
 const defaultContext: AIChatContext = {
-  initialized: false,
+  ...mojom.defaultUIState,
   isDefaultConversation: true,
-  visibleConversations: [],
-  hasAcceptedAgreement: false,
-  isPremiumStatusFetching: true,
-  isPremiumUser: false,
-  isPremiumUserDisconnected: false,
-  isStandalone: getAPI().isStandalone,
-  isStorageNoticeDismissed: false,
-  canShowPremiumPrompt: undefined,
-  isMobile: Boolean(loadTimeData.getBoolean('isMobile')),
-  isHistoryEnabled: Boolean(loadTimeData.getBoolean('isHistoryEnabled')),
-  allActions: [],
   goPremium: () => { },
   managePremium: () => { },
   handleAgreeClick: () => { },
+  markStorageNoticeViewed: () => { },
   dismissStorageNotice: () => { },
   dismissPremiumPrompt: () => { },
   userRefreshPremiumSession: () => { },
@@ -73,7 +50,10 @@ export const AIChatReactContext =
   React.createContext<AIChatContext>(defaultContext)
 
 export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
-  const [context, setContext] = React.useState<AIChatContext>(defaultContext)
+  const [context, setContext] = React.useState<AIChatContext>({
+    ...defaultContext,
+    ...getAPI().UIState
+  })
   const [editingConversationId, setEditingConversationId] = React.useState<string | null>(null)
 
   const setPartialContext = (partialContext: Partial<AIChatContext>) => {
@@ -84,72 +64,10 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
   }
 
   React.useEffect(() => {
-    const { Service, Observer, UIObserver } = getAPI()
-    async function initialize() {
-      const [
-        { conversations: visibleConversations },
-        { actionList: allActions },
-        { canShowPremiumPrompt, isStorageNoticeDismissed, hasAcceptedAgreement }
-      ] = await Promise.all([
-        Service.getVisibleConversations(),
-        Service.getActionMenuList(),
-        Service.getNoticesState()
-      ])
-      setPartialContext({
-        initialized: true,
-        hasAcceptedAgreement,
-        isStorageNoticeDismissed,
-        visibleConversations,
-        allActions,
-        canShowPremiumPrompt
-      })
-    }
+    setPartialContext(getAPI().UIState)
 
-    async function updateCurrentPremiumStatus() {
-      const { status } = await getAPI().Service.getPremiumStatus()
-      setPartialContext({
-        isPremiumStatusFetching: false,
-        isPremiumUser: (status !== undefined && status !== mojom.PremiumStatus.Inactive),
-        isPremiumUserDisconnected: status === mojom.PremiumStatus.ActiveDisconnected
-      })
-    }
-
-    initialize()
-    updateCurrentPremiumStatus()
-
-    if (context.isHistoryEnabled) {
-      Observer.onConversationListChanged.addListener(
-        (conversations: mojom.Conversation[]) => {
-          setPartialContext({
-            visibleConversations: conversations
-          })
-        }
-      )
-    }
-
-    Observer.onAgreementAccepted.addListener(() =>
-      setPartialContext({
-        hasAcceptedAgreement: true
-      })
-    )
-
-    UIObserver.setInitialData.addListener((isStandalone: boolean) => {
-      setPartialContext({
-        isStandalone
-      })
-    })
-
-    // Since there is no server-side event for premium status changing,
-    // we should check often. And since purchase or login is performed in
-    // a separate WebContents, we can check when focus is returned here.
-    window.addEventListener('focus', () => {
-      updateCurrentPremiumStatus()
-    })
-
-    document.addEventListener('visibilitychange', (e) => {
-      if (document.visibilityState === 'visible') {
-        updateCurrentPremiumStatus()
-      }
+    getAPI().addUIStateChangeListener((e) => {
+      setPartialContext(e.detail)
     })
   }, [])
 
@@ -160,7 +78,13 @@ export function AIChatContextProvider(props: React.PropsWithChildren<Props>) {
     ...props,
     goPremium: () => UIHandler.goPremium(),
     managePremium: () => UIHandler.managePremium(),
-    dismissStorageNotice: () => Service.dismissStorageNotice(),
+    markStorageNoticeViewed: () => Service.dismissStorageNotice(),
+    dismissStorageNotice: () => {
+      setPartialContext({
+        isStorageNoticeDismissed: true
+      })
+      Service.dismissStorageNotice()
+    },
     dismissPremiumPrompt: () => Service.dismissPremiumPrompt(),
     userRefreshPremiumSession: () => UIHandler.refreshPremiumSession(),
     handleAgreeClick: () => Service.markAgreementAccepted(),
